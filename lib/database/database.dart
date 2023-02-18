@@ -6,18 +6,18 @@ import 'package:uuid/uuid.dart';
 import '../models/journal.dart';
 
 Map<String, Journal> generateRandomDatabase({
-  required int maxGap, // Tamanho máximo da janela de tempo
-  required int amount, // Entradas geradas
+  required int maxGap, // Max size of time windows
+  required int amount, // Generated entries
 }) {
   Random rng = Random();
 
   Map<String, Journal> map = {};
 
   for (int i = 0; i < amount; i++) {
-    int timeGap = rng.nextInt(maxGap - 1); // Define uma distância do hoje
+    int timeGap = rng.nextInt(maxGap - 1); // Defines a distance from today
     DateTime date = DateTime.now().subtract(
       Duration(days: timeGap),
-    ); // Gera um dia
+    );
 
     String id = const Uuid().v1();
 

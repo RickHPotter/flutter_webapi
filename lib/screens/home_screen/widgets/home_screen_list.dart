@@ -5,7 +5,8 @@ List<JournalCard> generateListJournalCards(
     {required int windowPage,
     required DateTime currentDay,
     required Map<String, Journal> database}) {
-  // Cria uma lista de Cards vazios
+
+  // this creates a list of empty cards
   List<JournalCard> list = List.generate(
     windowPage + 1,
     (index) => JournalCard(
@@ -13,7 +14,7 @@ List<JournalCard> generateListJournalCards(
     ),
   );
 
-  //Preenche os espaços que possuem entradas no banco
+  // fills out spaces that have entries in the database
   database.forEach((key, value) {
     if (value.createdAt
         .isAfter(currentDay.subtract(Duration(days: windowPage)))) {

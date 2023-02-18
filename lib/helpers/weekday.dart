@@ -1,4 +1,3 @@
-/// Gera dia da semana em português
 class WeekDay {
   int weekday;
   late String short;
@@ -7,32 +6,32 @@ class WeekDay {
   WeekDay(this.weekday) {
     switch (weekday) {
       case 7:
-        short = "dom";
-        long = "Domingo";
+        short = 'SUN';
+        long = 'Sunday';
         break;
       case 1:
-        short = "seg";
-        long = "Segunda-Feira";
+        short = 'MON';
+        long = 'Monday';
         break;
       case 2:
-        short = "ter";
-        long = "Terça-Feira";
+        short = 'TUE';
+        long = 'Tuesday';
         break;
       case 3:
-        short = "qua";
-        long = "Quarta-Feira";
+        short = 'WED';
+        long = 'Wednesday';
         break;
       case 4:
-        short = "qui";
-        long = "Quinta-Feira";
+        short = 'THU';
+        long = 'Thursday';
         break;
       case 5:
-        short = "sex";
-        long = "Sexta-Feira";
+        short = 'FRI';
+        long = 'Friday';
         break;
       case 6:
-        short = "sab";
-        long = "Sábado";
+        short = 'SAT';
+        long = 'Saturday';
         break;
     }
   }

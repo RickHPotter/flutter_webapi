@@ -33,7 +33,8 @@ class JournalCard extends StatelessWidget {
                       color: Colors.black54,
                       border: Border(
                           right: BorderSide(color: Colors.black87),
-                          bottom: BorderSide(color: Colors.black87)),
+                          bottom: BorderSide(color: Colors.black87)
+                      ),
                     ),
                     padding: const EdgeInsets.all(16),
                     child: Text(
@@ -41,7 +42,8 @@ class JournalCard extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 32,
                           color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
                   Container(
