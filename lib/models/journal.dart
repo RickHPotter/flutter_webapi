@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
 class Journal {
@@ -13,11 +14,17 @@ class Journal {
     required this.updatedAt,
   });
 
+  Journal.fromMap(Map<String, dynamic> mapJournal)
+    : id = mapJournal["id"],
+      content = mapJournal["content"],
+      createdAt = DateTime.parse(mapJournal["createdAt"]),
+      updatedAt = DateTime.parse(mapJournal["updatedAt"]);
+
   Journal.empty()
-      : id = const Uuid().v1(),
-        content = "No Content Room",
-        createdAt = DateTime.now(),
-        updatedAt = DateTime.now();
+    : id = const Uuid().v1(),
+      content = "No Content Room",
+      createdAt = DateTime.now(),
+      updatedAt = DateTime.now();
 
   Map<String, dynamic> toMap() {
     return {
@@ -26,6 +33,28 @@ class Journal {
       "createdAt": createdAt.toString(),
       "updatedAt": updatedAt.toString(),
     };
+  }
+
+  String toJson() {
+    return json.encode(toMap());
+  }
+
+  static Journal toJournal(String strJson) {
+    Map<String, dynamic> mapJournal = jsonDecode(strJson);
+    Journal journal = Journal.fromMap(mapJournal);
+    return journal;
+  }
+
+  static List<Journal> toListOfJournals(String strJson) {
+    List<dynamic> listMapJournals = jsonDecode(strJson);
+    List<Journal> listJournals = [];
+
+    for (var item in listMapJournals) {
+      Journal journal = Journal.fromMap(item);
+      listJournals.add(journal);
+    }
+
+    return listJournals;
   }
 
   @override

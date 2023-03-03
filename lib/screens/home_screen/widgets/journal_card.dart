@@ -1,14 +1,20 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/helpers/weekday.dart';
 import 'package:flutter_webapi_first_course/models/journal.dart';
 import 'package:uuid/uuid.dart';
 
 class JournalCard extends StatelessWidget {
-  final Journal? journal;
   final DateTime showedDate;
-  const JournalCard({Key? key, this.journal, required this.showedDate})
+  final Function refreshFunction;
+  final Journal? journal;
+
+  const JournalCard(
+      {
+        Key? key,
+        required this.showedDate,
+        required this.refreshFunction,
+        this.journal
+      })
       : super(key: key);
 
   @override
@@ -118,6 +124,7 @@ class JournalCard extends StatelessWidget {
             ),
         );
       }
+      refreshFunction();
     });
   }
 }

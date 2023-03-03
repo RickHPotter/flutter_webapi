@@ -5,14 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'models/journal.dart';
 import 'screens/home_screen/home_screen.dart';
 
-import 'package:flutter_webapi_first_course/services/journal_services.dart';
-
 void main() async {
   runApp(const MyApp());
-
-  JournalService service = JournalService();
-  // service.get();
-  service.register(Journal.empty());
 }
 
 class MyApp extends StatelessWidget {
@@ -40,9 +34,6 @@ class MyApp extends StatelessWidget {
       initialRoute: "home",
       routes: {
         "home": (context) => const HomeScreen(),
-        // "add-journal": (context) => AddJournalScreen(
-        //   journal: context.of()
-        // ),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "add-journal") {
