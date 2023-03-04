@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webapi_first_course/screens/add_journal_screen/add_journal_screen.dart';
+import 'package:flutter_webapi_first_course/screens/journal_screen/add_journal_screen.dart';
+import 'package:flutter_webapi_first_course/screens/journal_screen/edit_journal_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'models/journal.dart';
@@ -40,7 +41,14 @@ class MyApp extends StatelessWidget {
           final Journal journal = settings.arguments as Journal;
           return MaterialPageRoute(builder: (context) {
               return AddJournalScreen(journal: journal);
-            }
+          }
+          );
+        }
+        if (settings.name == "edit-journal") {
+          final Journal journal = settings.arguments as Journal;
+          return MaterialPageRoute(builder: (context) {
+            return EditJournalScreen(journal: journal);
+          }
           );
         }
         return null;

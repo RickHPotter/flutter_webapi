@@ -21,7 +21,9 @@ class JournalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (journal != null) {
       return InkWell(
-        onTap: () {},
+        onTap: () {
+          callEditJournalScreen(context);
+        },
         child: Container(
           height: 115,
           margin: const EdgeInsets.all(8),
@@ -88,7 +90,8 @@ class JournalCard extends StatelessWidget {
           ),
         ),
       );
-    } else {
+    }
+    else {
       return InkWell(
         onTap: () {
           callAddJournalScreen(context);
@@ -98,7 +101,9 @@ class JournalCard extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             "${WeekDay(showedDate.weekday).short} - ${showedDate.day}",
-            style: const TextStyle(fontSize: 12),
+            style: TextStyle(
+              color: WeekDay(showedDate.weekday).colour
+            ),
             textAlign: TextAlign.center,
           ),
         ),
@@ -127,5 +132,23 @@ class JournalCard extends StatelessWidget {
       refreshFunction();
     });
   }
+
+  callEditJournalScreen(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      "edit-journal",
+      arguments: journal
+    ).then((value) {
+      if (value != null && value == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Updating...')
+          ),
+        );
+      }
+      refreshFunction();
+    });
+  }
+
 }
 

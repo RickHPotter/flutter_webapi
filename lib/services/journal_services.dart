@@ -6,8 +6,7 @@ import '../models/journal.dart';
 
 class JournalService {
   static const String url = '192.168.100.66:9090';
-  static const String resource = 'diary/entry';
-  static const String delete = '/delete?id=';
+  static const String resource = '/diary/entry';
 
   http.Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
@@ -30,10 +29,10 @@ class JournalService {
     return [Journal.empty()];
   }
 
-  Future<bool> register(Journal journal) async {
+  Future<bool> post(Journal journal) async {
     String jsonJournal = journal.toJson();
     http.Response response = await client.post(
-        Uri.http(url, resource),
+        Uri.http(url, '$resource/insert'),
         headers: {
           'Content-Type': 'application/json'
         },
@@ -45,4 +44,34 @@ class JournalService {
     }
     return false;
   }
+
+  Future<bool> patch(Journal journal) async {
+    String id = journal.id;
+    String jsonJournal = journal.toJson();
+    http.Response response = await client.patch(
+        Uri.http(url, '$resource/update', {'id' : id}),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: jsonJournal
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> delete(Journal journal) async {
+    String id = journal.id;
+    http.Response response = await client.patch(
+        Uri.http(url, '$resource/delete', {'id' : id})
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
 }

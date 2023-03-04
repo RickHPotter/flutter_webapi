@@ -1,6 +1,7 @@
 import '../../../models/journal.dart';
 import 'journal_card.dart';
 
+// static methods
 int diffInDays (DateTime date1, DateTime date2) {
   return (
       (date1.difference(date2) - Duration(hours: date1.hour)
@@ -15,34 +16,13 @@ List<JournalCard> generateListJournalCards(
       required Function refreshFunction
     }) {
 
-  Map<int, int> counter = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0};
   Duration week = const Duration(days: 7);
 
-  database.forEach((key, value) {
-    DateTime date = value.createdAt;
-    bool isInRange = date.isAfter(currentDay.subtract(week));
-
-    if (isInRange) {
-      int diff = diffInDays(date, currentDay).abs();
-      counter[diff] = counter[diff]! + 1;
-    }
-
-  });
-
-  List<int> indexation = List.generate(7, (index) => index);
-
-
-  counter.forEach((key, value) {
-      for (int i = 1; i < value; i++) {
-        indexation.add(key);
-      }
-  });
-
-  indexation.sort();
-
+  // creation of the returning List<JournalCard> and a helper map
   List<JournalCard> list = [];
   Map<int, List<Journal>> sortedList = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6:[]};
 
+  // populating the helper map
   database.forEach((key, value) {
     DateTime date = value.createdAt;
 
@@ -53,17 +33,21 @@ List<JournalCard> generateListJournalCards(
     }
   });
 
-  for (int i = 0; i < indexation.length; i++) {
+  // adding JournalCards to every day of the last 7
+  for (int i = 0; i < 7; i++) {
     JournalCard journalCard;
 
+    // in case there's no diary entry, then a blank journal card is added
     if (sortedList[i] == null || sortedList[i]!.isEmpty) {
       journalCard = JournalCard(
         showedDate: currentDay.subtract(Duration(days: i)),
         refreshFunction: refreshFunction,
       );
       list.add(journalCard);
-    } else {
-      for (int j = 0; j < sortedList[i]!.length; j++) {
+    }
+    // otherwise, one or more filled-in journal cards are added
+    else {
+      for (int j = sortedList[i]!.length - 1; j >= 0; j--) {
         journalCard = JournalCard(
           showedDate: currentDay.subtract(Duration(days: i)),
           refreshFunction: refreshFunction,
@@ -72,7 +56,6 @@ List<JournalCard> generateListJournalCards(
         list.add(journalCard);
       }
     }
-
   }
 
   return list;

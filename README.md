@@ -1,41 +1,41 @@
-![Thumbnail GitHub](https://github.com/alura-cursos/flutter_webapi_first_course/raw/main/thumbnail01.png)
+# Alura Side
 
-Repositório do Curso de Flutter com Web API - Integrando sua Aplicação, da Alura. 
+## 🛠️ This project is part of this [Alura course.](https://cursos.alura.com.br/formacao-flutter)
 
-## ✔️ Técnicas e tecnologias
+## ✔️ Techniques and Technologies
 
-**Veja mais de perto o que você aprenderá sobre** :
-- `API`: O que é e como funciona uma API e sua relação com a internet;
-- `http`: O que é o Protocolo HTTP e também a Biblioteca HTTP do Dart;
-- `async/await`: Como usar o `async` e o `await` para requisições que são operações assíncronas;
-- `interceptors`: O que é e como usar um interceptador HTTP;
-- `logger`: O que é e como usar um logger para melhor visualização no console;
+**What was built-in and/or used during Alura's Course** :
+- `API`: What it is and how an API works in the internet;
+- `http`: What HTTP is and its counterpart in Dart language;
+- `async/await`: How to use `async` and `await` for asynchronous requests;
+- `interceptors`: What interceptors are and how to use them aligned with HTTP;
+- `logger`: For better visualisation of console and easier debugging;
 
-## 🔨 Projeto: Simple Journal
+## 🔨 Starting Project
+![Alura Project](https://github.com/alura-cursos/flutter_webapi_first_course/raw/main/gif01.gif)
 
-O código de Flutter: Web API - Integrando sua Aplicação são **Classes** e **Funções** para gerar uma aplicação de um **Diário pessoal**, que **registra entradas diárias** da pessoa usuária do aplicativo.
+# Changes I have made to this project
 
-![GIF animado demonstrando funcionalidades do projeto](https://github.com/alura-cursos/flutter_webapi_first_course/raw/main/gif01.gif)
+- Instead of using Node.js JSON-SERVER application to initiate a Fake Rest API, I did what I'd been planning all this time: build a basic REST API, yet more than decent for this project. This is the [baby project](https://github.com/RickHPotter/fake_rest_api) I recreated with the help of [this Laith Academy's video](https://www.youtube.com/watch?v=d_L64KT3SFM&ab_channel=LaithAcademy), which led me to build [this REST Api of my own.](https://github.com/RickHPotter/flutter_rest_api)
+- Refactored out of AddJournalScreen a Widget that's used by AddJournalScreen, EditJournalScreen and ViewJournalScreen.
+    1. _ \\
+    2. Added an 'edit-journal' screen.
+        1. Added patch request updating both json:content and json:updatedAt.
+- Added colour differentiation for helpers/weekday.dart.
+- Refactored journal.toJson() and created Journal.toJournal() and Journal.toListOfJournals() static methods to make JSON parsing easier.
+- Changed the whole logic of home_screen_list.dart:
+    1. The most recent days are shown first.
+    2. Now it's possible to have multiple diary entries in a single day.
+    3. Fixed the problem of DateTime.difference() by using someone else's snippet code diffInDays().
 
-## 🛠️ Abrir e rodar o projeto
+# Changes I'll make in the future
 
-**Para executar este projeto você precisa:**
+- Add a view so the order becomes (Index [BlankJournal] -> Add -> View -> Edit/Index), (Index [FilledInJournal] -> View -> Edit -> View -> Edit/Index)
+- Theme Improvement
+- Turn the FakeDatabase into a RealDatabase.
+- New Icon
+- New Name
 
-- Ter uma IDE, que pode ser o  [Android Studio](https://developer.android.com/) instalado na sua máquina;
-- Ter a [SDK do Flutter](https://docs.flutter.dev/get-started/install) na versão 3.0.0;
-- Ter o [Node.JS](https://nodejs.org/en/) instalado na sua máquina;
-- (A partir da branch "Aula 02")  Ter um servidor [JSON-Server](https://www.npmjs.com/package/json-server) rodando o arquivo [server/db.json] em um endereço visível ao emulador usado;
 
-## 📚 Mais informações do curso
-
-Gostou do projeto e quer conhecer mais? Você pode [acessar o curso](https://cursos.alura.com.br/course/flutter-webapi-integrando-aplicacao) que desenvolve o projeto desde o começo! Nele você aprenderá:
-
-- O que é uma Web API;
-- Configurar uma API Local;
-- Configurar um projeto Flutter para fazer requisições para APIs;
-- O que é e como usar REST e JSON;
-- Métodos do HTTP como GET e POST;
-
-Esse curso faz parte da [formação de Flutter da Alura](https://cursos.alura.com.br/formacao-flutter)
-
-*Te vejo lá!*
+## 🏠 Endgame
+![My Project](https://github.com/RickHPotter/flutter_webapi_1/raw/main/gif01.gif)
