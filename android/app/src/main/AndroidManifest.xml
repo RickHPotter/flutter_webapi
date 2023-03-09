@@ -1,9 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.alura.flutter_webapi_first_course">
    <application
-        android:label="My Journal"
-        android:name="${applicationName}"
-       android:icon="@android:mipmap/sym_def_app_icon">
+        android:label="Sept Jours"
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

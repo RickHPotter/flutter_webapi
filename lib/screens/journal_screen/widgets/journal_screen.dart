@@ -6,9 +6,9 @@ import '../../../models/journal.dart';
 
 class JournalScreen extends StatelessWidget {
   final Journal journal;
-  final BuildContext cont;
-  final dynamic httpMethod;
-  JournalScreen({Key? key, required this.journal, required this.cont, required this.httpMethod})
+  final BuildContext cntxt;
+  final dynamic func;
+  JournalScreen({Key? key, required this.journal, required this.cntxt, required this.func})
       : super(key: key);
 
   late final TextEditingController _contentController = TextEditingController(
@@ -27,9 +27,9 @@ class JournalScreen extends StatelessWidget {
         title: Text(appBarText),
         actions: [
           IconButton(
-            onPressed: () {
-              var result = sendHTTP();
-              if (context.mounted == true) {
+            onPressed: () async {
+              var result = await func(cntxt, _contentController.text);
+              if (context.mounted) { // i could also use .then((value) {nav.pop(context, value)} instead of async-await-pop
                 Navigator.pop(context, result);
               }
             },
@@ -50,9 +50,4 @@ class JournalScreen extends StatelessWidget {
       ),
     );
   }
-
-  sendHTTP() async {
-    return await httpMethod(cont, _contentController.text);
-  }
-
 }

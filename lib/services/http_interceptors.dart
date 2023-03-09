@@ -10,7 +10,7 @@ class LoggingInterceptor implements InterceptorContract {
         'Request for ${data.baseUrl},\n'
         'Headers: ${data.headers},\n'
         'Body: ${data.body}';
-    logger.wtf(log);
+    // logger.wtf(log);
     return data;
   }
 
@@ -23,9 +23,9 @@ class LoggingInterceptor implements InterceptorContract {
         'Body: ${data.body}';
 
     if (data.statusCode ~/ 100 == 2) {
-      logger.i(log);
+      // logger.i(log);
     } else {
-      logger.e(log);
+      // logger.e(log);
     }
 
     return data;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/screens/journal_screen/widgets/journal_screen.dart';
-import 'package:flutter_webapi_first_course/services/journal_services.dart';
 
+import '../../models/dao.dart';
 import '../../models/journal.dart';
 
 class EditJournalScreen extends StatelessWidget {
@@ -11,17 +11,16 @@ class EditJournalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return JournalScreen(
-        journal: journal,
-        cont: context,
-        httpMethod: updateJournal,
+      journal: journal,
+      cntxt: context,
+      func: updateJournal,
     );
   }
 
   updateJournal(BuildContext context, String content) async {
     journal.content = content;
-    JournalService service = JournalService();
-    bool result = await service.patch(journal);
+    journal.updatedAt = DateTime.now();
 
-    return result;
+    return await Dao.prepareForUpdate(journal);
   }
 }

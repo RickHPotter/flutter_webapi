@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webapi_first_course/screens/about_screen/about_screen.dart';
 import 'package:flutter_webapi_first_course/screens/journal_screen/add_journal_screen.dart';
 import 'package:flutter_webapi_first_course/screens/journal_screen/edit_journal_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "home",
       routes: {
         "home": (context) => const HomeScreen(),
+        "about": (context) => const About(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "add-journal") {

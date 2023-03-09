@@ -1,30 +1,19 @@
-import 'dart:math';
-import 'package:uuid/uuid.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_webapi_first_course/models/dao.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
-import '../models/journal.dart';
-
-Map<String, Journal> generateRandomDatabase({
-  required int maxGap, // Max size of time windows
-  required int amount, // Generated entries
-}) {
-  Random rng = Random();
-
-  Map<String, Journal> map = {};
-
-  for (int i = 0; i < amount; i++) {
-    int timeGap = rng.nextInt(maxGap - 1); // Defines a distance from today
-    DateTime date = DateTime.now().subtract(
-      Duration(days: timeGap),
+class DataBaseHelper {
+  Future<Database> initDB(String from) async {
+    String path = await getDatabasesPath();
+    var db = await openDatabase(
+      join(path, 'journal.db'),
+      onCreate: (db, version) async => await db.execute(Dao.tableSQL),
+      version: 1
     );
-
-    String id = const Uuid().v1();
-
-    map[id] = Journal(
-      id: id,
-      content: 'getRandomPhrase()',
-      createdAt: date,
-      updatedAt: date,
-    );
+    debugPrint('[DB] from $from.');
+    return db;
   }
-  return map;
+
+
 }
