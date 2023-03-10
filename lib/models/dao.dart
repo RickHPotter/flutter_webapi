@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/database/database.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
@@ -35,7 +34,7 @@ class Dao {
       '$_updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)';
 
   static List<Journal> toList(List<Map<String, dynamic>> journalsMap) {
-    debugPrint('[DAO] [toList] Parsing Map into List...');
+    log.i('[DAO] [toList] Parsing Map into List...');
     final List<Journal> journals = [];
     for (Map<String, dynamic> line in journalsMap) {
       final Journal journal = Journal(
@@ -46,7 +45,7 @@ class Dao {
       );
       journals.add(journal);
     }
-    debugPrint('[DAO] [toList] Journals List has been created with size ${journals.length}.');
+    log.i('[DAO] [toList] Journals List has been created with size ${journals.length}.');
     return journals;
   }
 
@@ -63,7 +62,7 @@ class Dao {
       _updatedAt: journal.updatedAt.toString(),
     });
 
-    log.v('[DAO] [toMap] JournalsMap of ${journal.id} has been created.');
+    log.i('[DAO] [toMap] JournalsMap of ${journal.id} has been created.');
 
     return journalMap;
   }
@@ -81,7 +80,7 @@ class Dao {
     whereArgs: [...listId],
     );
 
-    log.v('[DAO] [findAll] Found journals of length ${journals.length}.');
+    log.i('[DAO] [findAll] Found journals of length ${journals.length}.');
     return toList(journals);
   }
 
@@ -95,7 +94,7 @@ class Dao {
       limit: 1,
     );
 
-    log.v('[DAO] [find] Found journal $journalId.');
+    log.i('[DAO] [find] Found journal $journalId.');
     return toList(journals);
   }
 
@@ -110,11 +109,11 @@ class Dao {
           _tableName,
           toMap(journal, actions[action]!),
       );
-      log.v('[DAO] [CREATE] Journal ${journal.id} has been inserted.');
+      log.i('[DAO] [CREATE] Journal ${journal.id} has been inserted.');
     }
     else {
       // TODO: ONLY CASE WHEN IT REACHES HERE IS ONE IN A BILLION UUID REPEATED ITSELF, MURPHY'S LAW
-      log.v('[DAO] [CREATE] Journal ${journal.id} already exists.');
+      log.i('[DAO] [CREATE] Journal ${journal.id} already exists.');
     }
     return (result > 0);
   }
@@ -151,10 +150,10 @@ class Dao {
     var itemExists = await find(journal.id);
     if (itemExists.isEmpty) {
       result = await db.insert(_tableName, journalsMap);
-      log.v('[DAO] [CREATE] Journal ${journal.id} has been inserted.');
+      log.i('[DAO] [CREATE] Journal ${journal.id} has been inserted.');
     }
     else {
-      log.v('[DAO] [CREATE] Journal ${journal.id} already exists.');
+      log.i('[DAO] [CREATE] Journal ${journal.id} already exists.');
     }
     return (result > 0);
   }
@@ -180,6 +179,6 @@ class Dao {
   static perform() async {
     final Database db = await dbHelper.initDB('[TEST]');
     List<Map<String, dynamic>> list = await db.rawQuery('SELECT ID FROM $_tableName');
-    debugPrint(list[0][_id]);
+    log.i(list[0][_id]);
   }
 }

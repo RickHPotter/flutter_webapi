@@ -6,8 +6,6 @@ import 'package:flutter_webapi_first_course/models/dao.dart';
 import 'package:flutter_webapi_first_course/screens/home_screen/widgets/slidable_plugin.dart';
 import 'package:flutter_webapi_first_course/helpers/weekday.dart';
 
-import '../../../services/journal_services.dart';
-
 class JournalCard extends StatelessWidget {
   final DateTime showedDate;
   final Function refreshFunction;
@@ -89,7 +87,7 @@ class JournalCard extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        journal!.id,
+                        journal!.content,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -171,8 +169,7 @@ class JournalCard extends StatelessWidget {
   }
 
   callDelete(BuildContext context) async {
-    await Dao.delete(journal!.id);
-    // await Dao.prepareForDelete(journal!);
+    await Dao.prepareForDelete(journal!);
     refreshFunction();
     return true;
   }

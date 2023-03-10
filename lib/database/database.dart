@@ -14,6 +14,4 @@ class DataBaseHelper {
     debugPrint('[DB] from $from.');
     return db;
   }
-
-
 }

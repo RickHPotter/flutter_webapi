@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/screens/about_screen/about_screen.dart';
+import 'package:flutter_webapi_first_course/screens/overview_screen/overview_screen.dart';
 import 'package:flutter_webapi_first_course/screens/journal_screen/add_journal_screen.dart';
 import 'package:flutter_webapi_first_course/screens/journal_screen/edit_journal_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,23 +20,26 @@ class MyApp extends StatelessWidget {
       title: 'Simple Journal',
       debugShowCheckedModeBanner: false,
       theme: ThemeData (
-        primarySwatch: Colors.grey,
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          backgroundColor: Colors.black,
-          titleTextStyle: TextStyle (
-            color: Colors.white,
+          primarySwatch: Colors.grey,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          appBarTheme: const AppBarTheme(
+            elevation: 0,
+            backgroundColor: Colors.black,
+            titleTextStyle: TextStyle (
+              color: Colors.white,
+            ),
+            actionsIconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: Colors.white),
           ),
-          actionsIconTheme: IconThemeData(color: Colors.white),
-          iconTheme: IconThemeData(color: Colors.white),
-        ),
-        textTheme: GoogleFonts.bitterTextTheme()
+          textTheme: GoogleFonts.bitterTextTheme()
       ),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.light,
+
       initialRoute: "home",
       routes: {
         "home": (context) => const HomeScreen(),
+        "overview": (context) => const Overview(),
         "about": (context) => const About(),
       },
       onGenerateRoute: (settings) {

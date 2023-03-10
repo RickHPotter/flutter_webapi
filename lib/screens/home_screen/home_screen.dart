@@ -3,10 +3,11 @@ import 'package:flutter_webapi_first_course/screens/home_screen/widgets/home_scr
 import 'package:flutter_webapi_first_course/services/journal_services.dart';
 
 import 'package:quickalert/quickalert.dart';
-
+import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
 import '../../models/dao.dart';
 import '../../models/journal.dart';
+import '../menu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,8 +21,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ScrollController _listScrollController = ScrollController();
   JournalService service = JournalService();
-
   Map<String, Journal> database = {};
+
+  // ----- Side Menu
+  final GlobalKey<SideMenuState> sideMenuKey = GlobalKey<SideMenuState>();
+  bool isOpened = false;
+
+  toggleMenu() {
+    final state = sideMenuKey.currentState!;
+    if (state.isOpened) {
+      state.closeSideMenu();
+    } else {
+      state.openSideMenu();
+    }
+  }
+  // Side Menu -----
 
   @override
   void initState() {
@@ -31,11 +45,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return SideMenu(
+        key: sideMenuKey,
+        inverse: false, // end side menu
+        background: const Color.fromRGBO(0, 48, 73, 1),
+        type: SideMenuType.shrinkNSlide,
+        menu: Padding(
+          padding: const EdgeInsets.only(left: 30.0),
+          child: BuildMenu(),
+        ),
+        onChange: (didOpen) {
+          setState(() => isOpened = didOpen);
+        },
+        child: IgnorePointer(
+            ignoring: isOpened,
+            child: scaffold()
+        )
+    );
+  }
+
+  Widget scaffold() {
     return Scaffold(
       appBar: AppBar(
         title:
         Text(
           "${currentDay.day}  |  ${currentDay.month}  |  ${currentDay.year}",
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.menu_open_rounded),
+          onPressed: () {
+            toggleMenu();
+          }
         ),
         actions: [
           IconButton(
@@ -77,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // TODO :  SOME REFACTORING DOWN HERE, I SUPPOSE
   void retrieveFromApi() async {
     int countDB = 0;
     // firstly, all data from the DB goes to the API

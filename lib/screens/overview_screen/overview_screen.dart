@@ -5,14 +5,14 @@ import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
 import '../menu.dart';
 
-class About extends StatefulWidget {
-  const About({Key? key}) : super(key: key);
+class Overview extends StatefulWidget {
+  const Overview({Key? key}) : super(key: key);
 
   @override
-  State<About> createState() => _AboutState();
+  State<Overview> createState() => _OverviewState();
 }
 
-class _AboutState extends State<About> {
+class _OverviewState extends State<Overview> {
 
   // ----- Side Menu
   final GlobalKey<SideMenuState> sideMenuKey = GlobalKey<SideMenuState>();
@@ -60,7 +60,7 @@ class _AboutState extends State<About> {
         centerTitle: true,
         title:
         const Text(
-          "ABOUT",
+          "OverView",
         ),
         leading: IconButton(
             icon: const Icon(Icons.menu_open_rounded),
@@ -71,7 +71,7 @@ class _AboutState extends State<About> {
       ),
       body: Container(
         padding: const EdgeInsets.all(2),
-        child: const Text('ABOUT'),
+        child: const Text('OVERVIEW'),
       ),
     );
   }
