@@ -60,7 +60,7 @@
 - TODO: Add colour dots to display on top right of Journal Cards.
     - Green is for updated both DB and API. Orange/Red is to be merged with the API.
 
-- Added a Side Menu using [Shrink Side Menu](https://pub.dev/packages/shrink_sidemenu).
+- Added a Side Menu using [Shrink Side Menu](https://pub.dev/packages/shrink_sidemenu). It doesn't seem as smooth when changing tabs, but this will do.
     - HomeScreen() only offering 7 days. If you want to write on a day that's more distant than 7 days then I can only assume that day did not mean shit to you.
     - TODO: Overview() which will have every journal entry so far in block-like galleries and when you click on them, it's a read-only view.
     - TODO: About(), about me, of course, and credits.

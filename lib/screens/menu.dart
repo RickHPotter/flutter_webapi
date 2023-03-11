@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/screens/home_screen/home_screen.dart';
 import 'package:flutter_webapi_first_course/screens/overview_screen/overview_screen.dart';
-import 'package:flutter_webapi_first_course/theme/theme_typography.dart';
 
 import 'about_screen/about_screen.dart';
 
 class BuildMenu extends StatelessWidget {
-  BuildMenu({Key? key}) : super(key: key);
-
-  late final TextStyle thinTile = ThemeTypography.gFonts(
-      'Sora', 15, FontWeight.w300, Colors.white);
-
-  late final TextStyle boldTile = ThemeTypography.gFonts(
-      'Sora', 15, FontWeight.w600, Colors.white);
+  const BuildMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +23,11 @@ class BuildMenu extends StatelessWidget {
                 const CircleAvatar( // TODO : IMPLEMENT PICTURE UPLOAD
                   backgroundColor: Colors.white,
                   radius: 22.0,
-
                 ),
                 const SizedBox(height: 16.0),
                 Text(
                   "Hello, ポッテル・リッキ",
-                  style: thinTile,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
                 const SizedBox(height: 20.0),
               ],
@@ -46,7 +38,7 @@ class BuildMenu extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder:(context) => const HomeScreen()));
             },
             leading: const Icon(Icons.sunny, size: 25.0, color: Colors.white),
-            title: Text("sept jours", style: boldTile,),
+            title: Text("sept jours", style: Theme.of(context).textTheme.labelMedium,),
             textColor: Colors.white,
             dense: true,
           ),
@@ -56,7 +48,7 @@ class BuildMenu extends StatelessWidget {
             },
             leading: const Icon(
                 Icons.motion_photos_on, size: 25.0, color: Colors.white),
-            title: Text("le panorama", style: thinTile,),
+            title: Text("le panorama", style: Theme.of(context).textTheme.labelSmall,),
             textColor: Colors.white,
             dense: true,
           ),
@@ -65,7 +57,7 @@ class BuildMenu extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder:(context) => const About()));
             },
             leading: const Icon(Icons.star, size: 25.0, color: Colors.white),
-            title: Text("environ", style: thinTile,),
+            title: Text("environ", style: Theme.of(context).textTheme.labelSmall,),
             textColor: Colors.white,
             dense: true,
           ),

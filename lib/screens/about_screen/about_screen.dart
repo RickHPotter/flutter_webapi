@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:quickalert/quickalert.dart';
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
 import '../menu.dart';
@@ -40,8 +39,8 @@ class _AboutState extends State<About> {
         inverse: false, // end side menu
         background: const Color.fromRGBO(0, 48, 73, 1),
         type: SideMenuType.shrinkNSlide,
-        menu: Padding(
-          padding: const EdgeInsets.only(left: 30.0),
+        menu: const Padding(
+          padding: EdgeInsets.only(left: 30.0),
           child: BuildMenu(),
         ),
         onChange: (didOpen) {
@@ -58,9 +57,9 @@ class _AboutState extends State<About> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title:
-        const Text(
-          "ABOUT",
+        title: Text(
+          "about us",
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         leading: IconButton(
             icon: const Icon(Icons.menu_open_rounded),

@@ -41,7 +41,7 @@ class JournalCard extends StatelessWidget {
               height: 85,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black87,
+                  color: WeekDay(journal!.createdAt.weekday).colour,
                 ),
               ),
               child: Row(
@@ -61,11 +61,7 @@ class JournalCard extends StatelessWidget {
                         ),
                         child: Text(
                           journal!.createdAt.day.toString(),
-                          style: const TextStyle(
-                              fontSize: 26,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                       Container(
@@ -78,7 +74,10 @@ class JournalCard extends StatelessWidget {
                           ),
                         ),
                         padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: Text(WeekDay(journal!.createdAt.weekday).short),
+                        child: Text(
+                          WeekDay(journal!.createdAt.weekday).short,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                     ],
                   ),
@@ -88,10 +87,7 @@ class JournalCard extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         journal!.content,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                       ),
@@ -141,8 +137,9 @@ class JournalCard extends StatelessWidget {
       if (value != null && value == true) {
         if(context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Saving...')
+            SnackBar(
+              content: Center(child: Text('...saving...', style: Theme.of(context).textTheme.titleSmall,)),
+              duration: const Duration(seconds: 1),
             ),
           );
         }
@@ -159,8 +156,9 @@ class JournalCard extends StatelessWidget {
     ).then((value) {
       if (value != null && value == true) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Updating...')
+          SnackBar(
+            content: Center(child: Text('...updating...', style: Theme.of(context).textTheme.titleSmall,)),
+            duration: const Duration(seconds: 1),
           ),
         );
       }

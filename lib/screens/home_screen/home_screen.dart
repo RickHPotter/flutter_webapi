@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  DateTime currentDay = DateTime.now();
+  DateTime today = DateTime.now();
 
   final ScrollController _listScrollController = ScrollController();
   JournalService service = JournalService();
@@ -47,11 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SideMenu(
         key: sideMenuKey,
-        inverse: false, // end side menu
+        inverse: false,
         background: const Color.fromRGBO(0, 48, 73, 1),
-        type: SideMenuType.shrinkNSlide,
-        menu: Padding(
-          padding: const EdgeInsets.only(left: 30.0),
+        type: SideMenuType.slide,
+        menu: const Padding(
+          padding: EdgeInsets.only(left: 30.0),
           child: BuildMenu(),
         ),
         onChange: (didOpen) {
@@ -67,49 +67,52 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget scaffold() {
     return Scaffold(
       appBar: AppBar(
-        title:
-        Text(
-          "${currentDay.day}  |  ${currentDay.month}  |  ${currentDay.year}",
+        title: Text(
+          "${today.day} | ${today.month} | ${today.year}",
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu_open_rounded),
-          onPressed: () {
-            toggleMenu();
-          }
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(6, 4, 0, 6),
+          child: ElevatedButton(
+            child: Icon(Icons.menu_open_rounded, color: Theme.of(context).colorScheme.secondary),
+            onPressed: () {
+              toggleMenu();
+            }
+          ),
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                retrieveFromApi();
-                QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.info,
-                  title: 'Success.',
-                  text: '___________',
-                  confirmBtnColor: Colors.black,
-                );
-              },
-              icon: const Icon(Icons.api_outlined)
+            icon: const Icon(Icons.api_outlined),
+            onPressed: () {
+              retrieveFromApi();
+              QuickAlert.show(
+                context: context,
+                type: QuickAlertType.info,
+                title: 'Success.',
+                text: '___________',
+                confirmBtnColor: Colors.black,
+              );
+            },
           ),
-          IconButton(
-              onPressed: () {
-                refreshFromDB();
-                QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.info,
-                  title: 'Success.',
-                  text: '___________',
-                  confirmBtnColor: Colors.black,
-                );
-              },
-              icon: const Icon(Icons.refresh_sharp)
-          ),
+          // IconButton(
+          //     onPressed: () {
+          //       refreshFromDB();
+          //       QuickAlert.show(
+          //         context: context,
+          //         type: QuickAlertType.info,
+          //         title: 'Success.',
+          //         text: '___________',
+          //         confirmBtnColor: Colors.black,
+          //       );
+          //     },
+          //     icon: const Icon(Icons.refresh_sharp)
+          // ),
         ],
       ),
       body: ListView(
         controller: _listScrollController,
         children: generateListJournalCards(
-          currentDay: currentDay,
+          currentDay: today,
           database: database,
           refreshFunction: refreshFromDB,
         ),
@@ -162,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void refreshFromDB() async { // i really wish i knew why async makes a difference in a non-await function,
-    Dao.findAll([0, 1, 2])
+    Dao.findAll([-1, 0, 1, 2])
         .then((list) => database = { for (var e in list) e.id : e })
         .whenComplete(() => setState(() {})
     );

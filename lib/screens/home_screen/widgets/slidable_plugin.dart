@@ -31,15 +31,16 @@ class Sliding extends StatelessWidget {
           children: [
             SlidableAction(
               onPressed: funcOne,
-              backgroundColor: const Color(0xFF21B7CA),
+              backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
+
               icon: Icons.edit_square,
               label: 'Edit',
               borderRadius: const BorderRadius.all(Radius.circular(8)),
             ),
             SlidableAction(
               onPressed: quickAlert,
-              backgroundColor: const Color(0xFFFE4A49),
+              backgroundColor: Theme.of(context).colorScheme.secondary.withGreen(26).withBlue(26),
               foregroundColor: Colors.white,
               icon: Icons.delete_sharp,
               label: 'Delete',

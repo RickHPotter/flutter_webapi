@@ -6,11 +6,3 @@ class ThemeTypography {
     return GoogleFonts.getFont(name, fontSize: size, fontWeight: weight, color: colour);
   }
 }
-
-/*
-BodyMedium = Text
-
-
-
-
-*/

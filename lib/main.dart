@@ -3,7 +3,7 @@ import 'package:flutter_webapi_first_course/screens/about_screen/about_screen.da
 import 'package:flutter_webapi_first_course/screens/overview_screen/overview_screen.dart';
 import 'package:flutter_webapi_first_course/screens/journal_screen/add_journal_screen.dart';
 import 'package:flutter_webapi_first_course/screens/journal_screen/edit_journal_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_webapi_first_course/theme/theme.dart';
 
 import 'models/journal.dart';
 import 'screens/home_screen/home_screen.dart';
@@ -19,21 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Simple Journal',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData (
-          primarySwatch: Colors.grey,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          appBarTheme: const AppBarTheme(
-            elevation: 0,
-            backgroundColor: Colors.black,
-            titleTextStyle: TextStyle (
-              color: Colors.white,
-            ),
-            actionsIconTheme: IconThemeData(color: Colors.white),
-            iconTheme: IconThemeData(color: Colors.white),
-          ),
-          textTheme: GoogleFonts.bitterTextTheme()
-      ),
-      darkTheme: ThemeData.dark(),
+      theme: myTheme,
       themeMode: ThemeMode.light,
 
       initialRoute: "home",

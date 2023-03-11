@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../helpers/month_name.dart';
 import '../../../helpers/weekday.dart';
 import '../../../models/journal.dart';
 
@@ -11,25 +10,29 @@ class JournalScreen extends StatelessWidget {
   JournalScreen({Key? key, required this.journal, required this.cntxt, required this.func})
       : super(key: key);
 
+  late final TextEditingController _titleController = TextEditingController(
+    text: 'Untitled',
+  );
   late final TextEditingController _contentController = TextEditingController(
-      text: journal.content
+      text: journal.content,
   );
   late final String appBarText =
       '${WeekDay(journal.createdAt.weekday).long}, '
-      '${journal.createdAt.year} | '
-      '${Month((journal.createdAt.month).toString()).long}, '
       '${journal.createdAt.day.toString().padLeft(2, '0')}. ';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(appBarText),
+        title: Text(
+          appBarText,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         actions: [
           IconButton(
             onPressed: () async {
               var result = await func(cntxt, _contentController.text);
-              if (context.mounted) { // i could also use .then((value) {nav.pop(context, value)} instead of async-await-pop
+              if (context.mounted) {
                 Navigator.pop(context, result);
               }
             },
@@ -37,16 +40,40 @@ class JournalScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextField(
-          controller: _contentController,
-          keyboardType: TextInputType.multiline,
-          style: const TextStyle(fontSize: 24),
-          minLines: null,
-          maxLines: null,
-          expands: true,
-        ),
+      body: Column(
+        children: [
+          // Text(DefaultTextStyle.of(context).style.fontWeight!.toString()),
+          Container(
+            color: WeekDay(journal.createdAt.weekday).colour,
+            height: 3,
+          ),
+          Flexible(
+            child: TextField(
+              controller: _titleController,
+              keyboardType: TextInputType.name,
+              style: Theme.of(context).textTheme.headlineLarge,
+              textAlign: TextAlign.center,
+              decoration: const InputDecoration(
+                enabledBorder: InputBorder.none,
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 6,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: TextField(
+                scrollPadding: const EdgeInsets.only(top: 220),
+                controller: _contentController,
+                style: Theme.of(context).textTheme.titleMedium,
+                keyboardType: TextInputType.multiline,
+                expands: true,
+                maxLines: null,
+                minLines: null,
+              ),
+            ),
+          ),
+      ],
       ),
     );
   }
