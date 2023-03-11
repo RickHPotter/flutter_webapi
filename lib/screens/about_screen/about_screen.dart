@@ -38,7 +38,7 @@ class _AboutState extends State<About> {
         key: sideMenuKey,
         inverse: false, // end side menu
         background: const Color.fromRGBO(0, 48, 73, 1),
-        type: SideMenuType.shrinkNSlide,
+        type: SideMenuType.slide,
         menu: const Padding(
           padding: EdgeInsets.only(left: 30.0),
           child: BuildMenu(),
@@ -61,11 +61,17 @@ class _AboutState extends State<About> {
           "about us",
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        leading: IconButton(
-            icon: const Icon(Icons.menu_open_rounded),
-            onPressed: () {
-              toggleMenu();
-            }
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(6, 4, 0, 6),
+          child: ElevatedButton(
+              child: Icon(
+                  Icons.menu_open_rounded,
+                  color: Theme.of(context).colorScheme.background
+              ),
+              onPressed: () {
+                toggleMenu();
+              }
+          ),
         ),
       ),
       body: Container(

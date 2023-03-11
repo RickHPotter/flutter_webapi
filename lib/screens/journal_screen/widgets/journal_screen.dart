@@ -11,10 +11,10 @@ class JournalScreen extends StatelessWidget {
       : super(key: key);
 
   late final TextEditingController _titleController = TextEditingController(
-    text: 'Untitled',
+    text: journal.title,
   );
   late final TextEditingController _contentController = TextEditingController(
-      text: journal.content,
+    text: journal.content,
   );
   late final String appBarText =
       '${WeekDay(journal.createdAt.weekday).long}, '
@@ -31,7 +31,7 @@ class JournalScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              var result = await func(cntxt, _contentController.text);
+              var result = await func(cntxt, _titleController.text , _contentController.text);
               if (context.mounted) {
                 Navigator.pop(context, result);
               }
@@ -52,6 +52,9 @@ class JournalScreen extends StatelessWidget {
               controller: _titleController,
               keyboardType: TextInputType.name,
               style: Theme.of(context).textTheme.headlineLarge,
+              expands: true,
+              maxLines: null,
+              minLines: null,
               textAlign: TextAlign.center,
               decoration: const InputDecoration(
                 enabledBorder: InputBorder.none,

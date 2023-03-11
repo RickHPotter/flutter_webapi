@@ -17,7 +17,8 @@ class EditJournalScreen extends StatelessWidget {
     );
   }
 
-  updateJournal(BuildContext context, String content) async {
+  updateJournal(BuildContext context, String title, String content) async {
+    journal.title = title;
     journal.content = content;
     journal.updatedAt = DateTime.now();
 

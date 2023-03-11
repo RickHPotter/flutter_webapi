@@ -1,7 +1,7 @@
-import 'package:flutter_webapi_first_course/database/database.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'package:flutter_webapi_first_course/database/database.dart';
 import 'journal.dart';
 
 class Dao {
@@ -19,6 +19,7 @@ class Dao {
 
     _id = 'id',
     _hash = 'hash',
+    _title = 'title',
     _content = 'content',
     _createdAt = 'createdAt',
     _updatedAt = 'updatedAt';
@@ -29,6 +30,7 @@ class Dao {
       'CREATE TABLE $_tableName ('
       '$_id INTEGER, '
       '$_hash TEXT PRIMARY KEY, '
+      '$_title TEXT, '
       '$_content TEXT, '
       '$_createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, '
       '$_updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)';
@@ -38,7 +40,9 @@ class Dao {
     final List<Journal> journals = [];
     for (Map<String, dynamic> line in journalsMap) {
       final Journal journal = Journal(
-        id: line[_hash],
+        id: line[_id].toString(),
+        hash: line[_hash],
+        title: line[_title],
         content: line[_content],
         createdAt: DateTime.parse(line[_createdAt]),
         updatedAt: DateTime.parse(line[_updatedAt]),
@@ -50,19 +54,20 @@ class Dao {
   }
 
   static Map<String, dynamic> toMap(Journal journal, int action) {
-    log.i('[DAO] [toMap] Parsing Journal ${journal.id} into Map...');
+    log.i('[DAO] [toMap] Parsing Journal ${journal.hash} into Map...');
 
     final Map<String, dynamic> journalMap = {};
 
     journalMap.addAll({
       _id: action,
-      _hash: journal.id,
+      _hash: journal.hash,
+      _title: journal.title,
       _content: journal.content,
       _createdAt: journal.createdAt.toString(),
       _updatedAt: journal.updatedAt.toString(),
     });
 
-    log.i('[DAO] [toMap] JournalsMap of ${journal.id} has been created.');
+    log.i('[DAO] [toMap] JournalsMap of ${journal.hash} has been created.');
 
     return journalMap;
   }
@@ -75,26 +80,26 @@ class Dao {
 
     final Database db = await dbHelper.initDB('findAll');
     final List<Map<String, dynamic>> journals = await db.query(
-    _tableName,
-    where: '$_id IN ($inClause)',
-    whereArgs: [...listId],
+      _tableName,
+      where: '$_id IN ($inClause)',
+      whereArgs: [...listId],
     );
 
     log.i('[DAO] [findAll] Found journals of length ${journals.length}.');
     return toList(journals);
   }
 
-  static Future<List<Journal>> find(String journalId) async {
+  static Future<List<Journal>> find(String journalHash) async {
     final Database db = await dbHelper.initDB('find');
 
     final List<Map<String, dynamic>> journals = await db.query(
       _tableName,
       where: '$_hash = ? and $_id >= ?',
-      whereArgs: [journalId, 0],
+      whereArgs: [journalHash, 0],
       limit: 1,
     );
 
-    log.i('[DAO] [find] Found journal $journalId.');
+    log.i('[DAO] [find] Found journal $journalHash.');
     return toList(journals);
   }
 
@@ -103,17 +108,17 @@ class Dao {
     final Database db = await dbHelper.initDB('[CREATE]');
 
     int result = 0;
-    List<Journal> itemExists = await find(journal.id);
+    List<Journal> itemExists = await find(journal.hash);
     if (itemExists.isEmpty) {
       result = await db.insert(
           _tableName,
           toMap(journal, actions[action]!),
       );
-      log.i('[DAO] [CREATE] Journal ${journal.id} has been inserted.');
+      log.i('[DAO] [CREATE] Journal ${journal.hash} has been inserted.');
     }
     else {
       // TODO: ONLY CASE WHEN IT REACHES HERE IS ONE IN A BILLION UUID REPEATED ITSELF, MURPHY'S LAW
-      log.i('[DAO] [CREATE] Journal ${journal.id} already exists.');
+      log.i('[DAO] [CREATE] Journal ${journal.hash} already exists.');
     }
     return (result > 0);
   }
@@ -126,20 +131,24 @@ class Dao {
       _tableName,
       toMap(journal, actions[action]!),
       where: '$_hash = ?',
-      whereArgs: [journal.id],
+      whereArgs: [journal.hash],
     );
     return (res > 0);
   }
 
   // DELETE
-  static delete(String journalId) async {
+  static delete(String journalHash, {int id = -1}) async {
     final Database db = await dbHelper.initDB('[DELETE]');
     return await db.delete(
       _tableName,
       where: '$_hash = ? and $_id = ?',
-      whereArgs: [journalId, -1],
+      whereArgs: [journalHash, id],
     );
   }
+
+  /*
+  USER INTERFACE
+  */
 
   static prepareForInsert(Journal journal) async {
     final Database db = await dbHelper.initDB('[CREATE]');
@@ -147,13 +156,13 @@ class Dao {
     Map<String, dynamic> journalsMap = toMap(journal, actions['INSERT']!);
 
     int result = 0;
-    var itemExists = await find(journal.id);
+    var itemExists = await find(journal.hash);
     if (itemExists.isEmpty) {
       result = await db.insert(_tableName, journalsMap);
-      log.i('[DAO] [CREATE] Journal ${journal.id} has been inserted.');
+      log.i('[DAO] [CREATE] Journal ${journal.hash} has been inserted.');
     }
     else {
-      log.i('[DAO] [CREATE] Journal ${journal.id} already exists.');
+      log.i('[DAO] [CREATE] Journal ${journal.hash} already exists.');
     }
     return (result > 0);
   }
@@ -163,7 +172,7 @@ class Dao {
 
     final List<Map<String, dynamic>> j = await db.rawQuery(
       'SELECT ID FROM $_tableName WHERE HASH = ?',
-      [journal.id]
+      [journal.hash]
     );
 
     String action;
@@ -173,12 +182,18 @@ class Dao {
   }
 
   static prepareForDelete(Journal journal) async {
-    return update(journal, action: 'DELETE');
-  }
+    final Database db = await dbHelper.initDB('[UPDATE]');
 
-  static perform() async {
-    final Database db = await dbHelper.initDB('[TEST]');
-    List<Map<String, dynamic>> list = await db.rawQuery('SELECT ID FROM $_tableName');
-    log.i(list[0][_id]);
+    final List<Map<String, dynamic>> j = await db.rawQuery(
+        'SELECT ID FROM $_tableName WHERE HASH = ?',
+        [journal.hash]
+    );
+
+    if (j[0][_id] == 1) { // if 1, then it's only in the db
+      delete(journal.hash, id: 1);
+      return true;
+    }
+
+    return update(journal, action: 'DELETE');
   }
 }

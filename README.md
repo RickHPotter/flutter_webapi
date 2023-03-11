@@ -23,6 +23,11 @@
 
 ## LOGIC
 
+- Changed original `Journal.id` to `Journal.hash`, added `Journal.id` and `Journal.title`.
+    - `Journal.id` became a checker. 0 is for updated both in the DB and the API, 1 is for Insert-Mode, 2 is for Update-Mode, -1 is for Delete-Mode.
+    - `Journal.hash` is the original id automatically created using ([UUID](https://pub.dev/packages/uuid).
+    - `Journal.title` is as it says, the Title.
+
 - Refactored `journal.toJson()` and created `Journal.toJournal()` and `Journal.toListOfJournals()` static methods to make JSON parsing easier.
 
 - Changed the whole logic of home_screen_list.dart:
@@ -57,7 +62,7 @@
 
 - Added [QuickAlert](https://pub.dev/packages/quickalert) for `prepareForDelete()`, onPressed: () { `refreshFromDb()`; }, and onPressed: () { `retrieveFromApi()`; }
 
-- TODO: Add colour dots to display on top right of Journal Cards.
+- Add colour dots to display on top right of Journal Cards.
     - Green is for updated both DB and API. Orange/Red is to be merged with the API.
 
 - Added a Side Menu using [Shrink Side Menu](https://pub.dev/packages/shrink_sidemenu). It doesn't seem as smooth when changing tabs, but this will do.

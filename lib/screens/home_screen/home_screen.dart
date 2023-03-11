@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webapi_first_course/screens/home_screen/widgets/home_screen_list.dart';
-import 'package:flutter_webapi_first_course/services/journal_services.dart';
-
-import 'package:quickalert/quickalert.dart';
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
-import '../../models/dao.dart';
-import '../../models/journal.dart';
-import '../menu.dart';
+import 'package:quickalert/quickalert.dart';
+
+import 'package:flutter_webapi_first_course/screens/home_screen/widgets/home_screen_list.dart';
+import 'package:flutter_webapi_first_course/services/journal_services.dart';
+import 'package:flutter_webapi_first_course/models/dao.dart';
+import 'package:flutter_webapi_first_course/models/journal.dart';
+import 'package:flutter_webapi_first_course/screens/menu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SideMenu(
         key: sideMenuKey,
         inverse: false,
-        background: const Color.fromRGBO(0, 48, 73, 1),
+        background: Theme.of(context).colorScheme.primary,
         type: SideMenuType.slide,
         menu: const Padding(
           padding: EdgeInsets.only(left: 30.0),
@@ -67,14 +67,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget scaffold() {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "${today.day} | ${today.month} | ${today.year}",
+        title: Text( //journal.createdAt.day.toString().padLeft(2, '0')
+          "${today.day.toString().padLeft(2, '0')} | ${today.month} | ${today.year}",
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(6, 4, 0, 6),
           child: ElevatedButton(
-            child: Icon(Icons.menu_open_rounded, color: Theme.of(context).colorScheme.secondary),
+            child: Icon(
+                Icons.menu_open_rounded,
+                color: Theme.of(context).colorScheme.background
+            ),
             onPressed: () {
               toggleMenu();
             }
@@ -90,10 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 type: QuickAlertType.info,
                 title: 'Success.',
                 text: '___________',
-                confirmBtnColor: Colors.black,
+                confirmBtnColor: Theme.of(context).colorScheme.primary,
               );
             },
           ),
+
           // IconButton(
           //     onPressed: () {
           //       refreshFromDB();
@@ -107,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //     },
           //     icon: const Icon(Icons.refresh_sharp)
           // ),
+
         ],
       ),
       body: ListView(
@@ -127,9 +132,9 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Journal> pendingDelete = await Dao.findAll([-1]);
 
     for (Journal journal in pendingDelete) {
-      bool result = await service.delete(journal.id);
+      bool result = await service.delete(journal.hash);
       if (result) {
-        await Dao.delete(journal.id);
+        await Dao.delete(journal.hash);
         countDB++;
       }
     }
@@ -165,8 +170,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void refreshFromDB() async { // i really wish i knew why async makes a difference in a non-await function,
-    Dao.findAll([-1, 0, 1, 2])
-        .then((list) => database = { for (var e in list) e.id : e })
+    Dao.findAll([0, 1, 2])
+        .then((list) => database = { for (var e in list) e.hash : e })
         .whenComplete(() => setState(() {})
     );
   }

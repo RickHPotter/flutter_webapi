@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_webapi_first_course/theme/theme_typography.dart';
 import 'package:quickalert/quickalert.dart';
+
+import 'package:flutter_webapi_first_course/theme/theme_typography.dart';
 
 class Sliding extends StatelessWidget {
   final Widget content;
   final dynamic editFunc;
   final dynamic deleteFunc;
   final BuildContext cntxt;
-  final String id;
+  final String hash;
 
   const Sliding({
     Key? key,
@@ -16,7 +18,7 @@ class Sliding extends StatelessWidget {
     required this.editFunc,
     required this.deleteFunc,
     required this.cntxt,
-    required this.id})
+    required this.hash})
       : super(key: key);
 
   @override
@@ -33,14 +35,13 @@ class Sliding extends StatelessWidget {
               onPressed: funcOne,
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
-
               icon: Icons.edit_square,
               label: 'Edit',
               borderRadius: const BorderRadius.all(Radius.circular(8)),
             ),
             SlidableAction(
               onPressed: quickAlert,
-              backgroundColor: Theme.of(context).colorScheme.secondary.withGreen(26).withBlue(26),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               foregroundColor: Colors.white,
               icon: Icons.delete_sharp,
               label: 'Delete',
@@ -60,25 +61,17 @@ class Sliding extends StatelessWidget {
     QuickAlert.show(
       type: QuickAlertType.confirm,
       context: context,
-      widget: Text(
-          'you sure?',
-          style: ThemeTypography.gFonts(
-              'Rajdhani',
-              24,
-              FontWeight.w500,
-              const Color.fromRGBO(0, 48, 73, 1)
-          ),
-      ),
+      widget: Text('you sure?', style: ThemeTypography.rajdhaniPrimary),
 
       title: '_____________',
-      titleColor: const Color.fromRGBO(0, 48, 73, 1),
+      titleColor: Theme.of(context).colorScheme.primary,
 
       cancelBtnText: 'not like that',
-      cancelBtnTextStyle: ThemeTypography.gFonts('Abel', 16, FontWeight.w600, const Color(0xFFFE4A49)),
+      cancelBtnTextStyle: ThemeTypography.abelWatermelon,
 
       confirmBtnText: 'hell yeah',
-      confirmBtnTextStyle: ThemeTypography.gFonts('Abel', 16, FontWeight.w600, Colors.white),
-      confirmBtnColor: const Color.fromRGBO(0, 48, 73, 1),
+      confirmBtnTextStyle: ThemeTypography.abelWhite,
+      confirmBtnColor: Theme.of(context).colorScheme.primary,
 
       animType: QuickAlertAnimType.slideInUp,
 

@@ -20,8 +20,8 @@ class BuildMenu extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar( // TODO : IMPLEMENT PICTURE UPLOAD
-                  backgroundColor: Colors.white,
+                CircleAvatar( // TODO : IMPLEMENT PICTURE UPLOAD
+                  backgroundColor: Theme.of(context).colorScheme.background,
                   radius: 22.0,
                 ),
                 const SizedBox(height: 16.0),
@@ -37,7 +37,7 @@ class BuildMenu extends StatelessWidget {
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder:(context) => const HomeScreen()));
             },
-            leading: const Icon(Icons.sunny, size: 25.0, color: Colors.white),
+            leading: Icon(Icons.sunny, size: 25.0, color: Theme.of(context).colorScheme.background),
             title: Text("sept jours", style: Theme.of(context).textTheme.labelMedium,),
             textColor: Colors.white,
             dense: true,

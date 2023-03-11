@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Simple Journal',
       debugShowCheckedModeBanner: false,
       theme: myTheme,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
 
       initialRoute: "home",
       routes: {

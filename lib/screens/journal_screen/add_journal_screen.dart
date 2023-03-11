@@ -17,7 +17,8 @@ class AddJournalScreen extends StatelessWidget {
     );
   }
 
-  registerJournal(BuildContext context, String content) async {
+  registerJournal(BuildContext context, String title, String content) async {
+    journal.title = title;
     journal.content = content;
     journal.updatedAt = DateTime.now();
 

@@ -3,32 +3,41 @@ import 'package:uuid/uuid.dart';
 
 class Journal {
   String id;
+  String hash;
+  String title;
   String content;
   DateTime createdAt;
   DateTime updatedAt;
 
   Journal({
     required this.id,
+    required this.hash,
+    required this.title,
     required this.content,
     required this.createdAt,
     required this.updatedAt,
   });
 
   Journal.fromMap(Map<String, dynamic> mapJournal)
-    : id = mapJournal["id"],
+    : id = '0', // so far, only fromMap used is retrieving from API
+      hash = mapJournal["hash"],
+      title = mapJournal["title"],
       content = mapJournal["content"],
       createdAt = DateTime.parse(mapJournal["createdAt"]),
       updatedAt = DateTime.parse(mapJournal["updatedAt"]);
 
   Journal.empty()
-    : id = const Uuid().v1(),
+    : id = '0', // so far, only empty used is retrieving from API
+      hash = const Uuid().v1(),
+      title = "Untitled",
       content = "No Content Room",
       createdAt = DateTime.now(),
       updatedAt = DateTime.now();
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
+      "hash": hash,
+      "title": title,
       "content": content,
       "createdAt": createdAt.toString(),
       "updatedAt": updatedAt.toString(),
@@ -59,6 +68,6 @@ class Journal {
 
   @override
   String toString() {
-    return "$content \ncreated_at: $createdAt\nupdated_at:$updatedAt";
+    return "$title \n$content \ncreated_at: $createdAt\nupdated_at:$updatedAt";
   }
 }
