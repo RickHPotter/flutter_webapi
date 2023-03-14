@@ -2,7 +2,7 @@
 
 # VERSION 1
 
-### 🛠️ This project is part of this [Alura course.](https://cursos.alura.com.br/formacao-flutter)
+### 🛠️ This project is part of this [Alura course.](https://github.com/alura-cursos/flutter_webapi_first_course)
 
 ### ✔️ Techniques and Technologies
 
@@ -90,8 +90,21 @@
 - It was a dev-like two weeks for me, there was no Alura video playing on the side, no book to read, just Android Studio and the internet, this is somewhat what it's supposed to be, you need to make decisions yourself, even if they're bad, because if they are and you can spot them or accept them when someone spots them for you, you can learn how to make it better bit by bit.
 
 ## 🏠 Endgame
-![My Project so far](https://github.com/RickHPotter/flutter_webapi/blob/master/gif.gif)
+![My Project so far](https://github.com/RickHPotter/flutter_webapi/raw/master/gif.gif)
 
 
 # VERSION 2
-### 🛠️ This project is part of this [Alura course.](https://cursos.alura.com.br/formacao-flutter)
+
+### 🛠️ This project is part of this [Alura course.](https://github.com/alura-cursos/flutter_webapi_second_course)
+
+### ✔️ Techniques and Technologies
+
+**What was built-in and/or used during Alura's Course** :
+- `put`: What it is and how to use it to implement a change via API; // already implemented in my version
+- `delete`: What it is and how to use it to perform a delete via API; // already implemented in my version
+- `dialog`: How to create reusable `dialogs`; // already implemented using quickAlert, but will dig into it
+- `headers`: How to utilise headers to make auth requests;
+- `catchError`: A (soon-to-be) deprecated method of Future to handle asynchronous errors;
+
+## 🔨 Starting Project
+![Alura Project](https://github.com/alura-cursos/flutter_webapi_second_course/raw/main/gif02.gif)
