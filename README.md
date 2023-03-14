@@ -90,7 +90,7 @@
 - It was a dev-like two weeks for me, there was no Alura video playing on the side, no book to read, just Android Studio and the internet, this is somewhat what it's supposed to be, you need to make decisions yourself, even if they're bad, because if they are and you can spot them or accept them when someone spots them for you, you can learn how to make it better bit by bit.
 
 ## 🏠 Endgame
-![My Project so far](https://github.com/RickHPotter/flutter_webapi/gif.gif)
+![My Project so far](https://github.com/RickHPotter/flutter_webapi/blob/master/gif.gif)
 
 
 # VERSION 2
