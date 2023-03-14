@@ -76,7 +76,14 @@ class _AboutState extends State<About> {
       ),
       body: Container(
         padding: const EdgeInsets.all(2),
-        child: const Text('ABOUT'),
+        alignment: AlignmentDirectional.topCenter,
+        child: Text(
+          'You can call me Rick.\n'
+          'I\'m just trying my best to succeed.\n'
+          'This is just the beginning.\n\n\n\n\n'
+          'If you don\'t keep up...\nI\'ll be the one managing YOUR team.',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.bodyMedium,),
       ),
     );
   }
