@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
-
+import '../../models/dao.dart';
+import '../../models/journal.dart';
 import '../menu.dart';
+
+import 'package:flutter_webapi_first_course/screens/overview_screen/widgets/overview_screen_list.dart';
 
 class Overview extends StatefulWidget {
   const Overview({Key? key}) : super(key: key);
@@ -27,9 +30,12 @@ class _OverviewState extends State<Overview> {
   }
   // Side Menu -----
 
+  late final List<Journal> database;
+
   @override
   void initState() {
     super.initState();
+    orderGet();
   }
 
   @override
@@ -74,10 +80,24 @@ class _OverviewState extends State<Overview> {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(2),
-        child: const Text('OVERVIEW'),
+      body: rows(),
+    );
+  }
+
+  Widget rows() {
+    return GridView.count(
+      //mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisCount: 2,
+      children: generateListJournalCardsView (
+          database: database,
       ),
     );
+  }
+
+  void orderGet() async {
+    database = await Dao.orderedGet();
+    setState(() {
+
+    });
   }
 }

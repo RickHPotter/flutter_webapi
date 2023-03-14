@@ -35,10 +35,10 @@ class ThemeColours {
 
   static const Map<int, Color> weekdays =
   {
-    600:Color.fromRGBO(255, 240, 176, 1), // WEEKDAYS
-    700:Color.fromRGBO(255, 180, 76, 1), // FRIDAY
-    800:Color.fromRGBO(255, 120, 76, 1), // SATURDAY
-    900:Color.fromRGBO(255, 60, 76, 1), // SUNDAY
+    600:Color.fromRGBO(255, 249, 167, 1), // WEEKDAYS
+    700:Color.fromRGBO(255, 194, 19, 1), // FRIDAY
+    800:Color.fromRGBO(247, 126, 33, 1), // SATURDAY
+    900:Color.fromRGBO(214, 28, 78, 1), // SUNDAY
   };
 
   static const colourDots = {

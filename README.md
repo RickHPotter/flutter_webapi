@@ -1,8 +1,10 @@
 # Alura Side
 
-## 🛠️ This project is part of this [Alura course.](https://cursos.alura.com.br/formacao-flutter)
+# VERSION 1
 
-## ✔️ Techniques and Technologies
+### 🛠️ This project is part of this [Alura course.](https://cursos.alura.com.br/formacao-flutter)
+
+### ✔️ Techniques and Technologies
 
 **What was built-in and/or used during Alura's Course** :
 - `API`: What it is and how an API works in the internet;
@@ -14,14 +16,14 @@
 ## 🔨 Starting Project
 ![Alura Project](https://github.com/alura-cursos/flutter_webapi_first_course/raw/main/gif01.gif)
 
-# Changes I have made to this project
+## Changes I have made to this project
 
-## REST API
+### REST API
 
 - Instead of using Node.js JSON-SERVER application to initiate a Fake Rest API, I did what I'd been planning all this time: build a basic REST API using GoLang. 
     - It's surprisingly more than decent for this project. I recreated the [baby project](https://github.com/RickHPotter/fake_rest_api) with the help of [this Laith Academy's video](https://www.youtube.com/watch?v=d_L64KT3SFM&ab_channel=LaithAcademy), which led me to build [this REST Api of my own.](https://github.com/RickHPotter/flutter_rest_api)
 
-## LOGIC
+### LOGIC
 
 - Changed original `Journal.id` to `Journal.hash`, added `Journal.id` and `Journal.title`.
     - `Journal.id` became a checker. 0 is for updated both in the DB and the API, 1 is for Insert-Mode, 2 is for Update-Mode, -1 is for Delete-Mode.
@@ -50,10 +52,9 @@
     - Added an 'edit-journal' screen.
         - Added patch request updating both `json:content` and `json:updatedAt`.
         - Added `db.prepareForUpdate()`.
-    - TODO: Added a 'view-journal' screen.
-        - ?
+    - DROPPED: Added a 'view-journal' screen.
 
-## THEME
+### THEME
 
 - Added colour differentiation for helpers/weekday.dart.
  
@@ -67,15 +68,30 @@
 
 - Added a Side Menu using [Shrink Side Menu](https://pub.dev/packages/shrink_sidemenu). It doesn't seem as smooth when changing tabs, but this will do.
     - HomeScreen() only offering 7 days. If you want to write on a day that's more distant than 7 days then I can only assume that day did not mean shit to you.
-    - TODO: Overview() which will have every journal entry so far in block-like galleries and when you click on them, it's a read-only view.
-    - TODO: About(), about me, of course, and credits.
+    - Overview() which will have every journal entry so far in block-like galleries.
+      - DROPPED: When you click on them, it's a read-only view.
+    - About(), about me, of course, and credits.
 
-- DOING: Trying to create a new icon that doesn't suck. Using [FlutterLauncherIcons](https://pub.dev/packages/flutter_launcher_icons). 
+- Added a new icon using [FlutterLauncherIcons](https://pub.dev/packages/flutter_launcher_icons).
+  - DROPPED: Trying to create another new icon that doesn't suck. 
 
-# Changes I'll make in the future
+## Things I didn't like about my project.
 
-- More refactoring.
-- Add Locale.
+- I spent some unusual time on it and had somewhat a slow progress which is understandable for someone who hasn't done this before. It hasn't even been 2 full months studying Flutter, so there's that. So something I didn't like was not not having more time to produce, but not having more experience to produce faster.
+- The Side Menu looks good but unnatural. I used a single key for every screen and that's just utterly retarded but I didn't find a way to refactor that out and share they key with everyone, so yeah, there's that.
+- Typography is a key to UX, but I'm just a newbie. I think I used way too many fonts that most likely does not fit other app criteria.
+- I wanted to make an only-view modal but ended up realising I was spending too much time on this, although same means to an end, I'd rather spend 30 minutes studying and maybe coming back to spend 30 minutes doing it, then spending 4 hours trying to do something I haven't been taught. I tried to create a second screen, and well it's there, but it honestly sucks, in my mind it seemed a good idea, but it looks ugly and maybe even unnecessary in the way I laid it out. Maybe in the future, I will undoubtedly know what do there. But for now, I need to keep going.
+
+## Things I liked about my project.
+
+- I like how natural it was to have plain project created and still feel the need to make some changes. This defeats the problem of Tutorial Hell. In this dreadful state many of us students happen to be in, we dwell in finding more and more tutorials to study but we don't learn, and that's because we don't make mistakes in tutorials, tutorials do not contemplate the mistakes we make along the way and looking them up is what make us more susceptible to learn how something works and why something doesn't work the way we wanted it to. 
+- I was surprised I actually made it better, even visually. Second screen is useless and third screen was not supposed to be game-changing, but first screen is amazing, the slidable and quickAlert add a nice touch to the project making it more modern without taking out the simplicity of it.
+- I was able to get some knowledge from other courses to this project. Apart from the obvious knowledge acquired during the WEBAPI Course Part I, I also inherited the Colour Dot, Theme Structure from [AluBank](https://github.com/RickHPotter/alubank) project, DB operation from [first project](https://github.com/RickHPotter/flutter_one). Good project to reunite with things I'd learned before.
+- It was a dev-like two weeks for me, there was no Alura video playing on the side, no book to read, just Android Studio and the internet, this is somewhat what it's supposed to be, you need to make decisions yourself, even if they're bad, because if they are and you can spot them or accept them when someone spots them for you, you can learn how to make it better bit by bit.
 
 ## 🏠 Endgame
-![My Project](https://github.com/RickHPotter/flutter_webapi_1/gif.gif)
+![My Project so far](https://github.com/RickHPotter/flutter_webapi/gif.gif)
+
+
+# VERSION 2
+### 🛠️ This project is part of this [Alura course.](https://cursos.alura.com.br/formacao-flutter)

@@ -73,6 +73,18 @@ class Dao {
   }
 
   // READ
+  static Future<List<Journal>> orderedGet() async {
+    final Database db = await dbHelper.initDB('findAll');
+    final List<Map<String, dynamic>> journals = await db.query(
+      _tableName,
+      where: '$_id IN (?, ?, ?) order by $_createdAt desc',
+      whereArgs: [0, 1, 2],
+    );
+
+    log.i('[DAO] [orderedGet] Found journals of length ${journals.length}.');
+    return toList(journals);
+  }
+
   static Future<List<Journal>> findAll(List<int> listId) async {
     String inClause = '';
     inClause = '?, ' * (listId.length - 1);

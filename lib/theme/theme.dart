@@ -36,7 +36,7 @@ ThemeData myTheme = ThemeData(
 
       bodyLarge: ThemeTypography.gFonts('Fira Code', 26, FontWeight.w600, Colors.white),
       bodyMedium: ThemeTypography.gFonts('Fira Code', 16, FontWeight.w400, Colors.white),
-      bodySmall: ThemeTypography.gFonts('Fira Code', 12, FontWeight.w700, Colors.white),  // unused
+      bodySmall: ThemeTypography.gFonts('Fira Code', 10, FontWeight.w700, Colors.white),  // unused
 
       labelLarge: ThemeTypography.gFonts('Sora', 12, FontWeight.w400, Colors.white),  // slidable is adamant about being a labelLarge
       labelMedium: ThemeTypography.gFonts('Sora', 16, FontWeight.w600, Colors.white),

@@ -93,25 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 type: QuickAlertType.info,
                 title: 'Success.',
                 text: '___________',
-                confirmBtnColor: Theme.of(context).colorScheme.primary,
+                confirmBtnColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
               );
-            },
+            }
           ),
-
-          // IconButton(
-          //     onPressed: () {
-          //       refreshFromDB();
-          //       QuickAlert.show(
-          //         context: context,
-          //         type: QuickAlertType.info,
-          //         title: 'Success.',
-          //         text: '___________',
-          //         confirmBtnColor: Colors.black,
-          //       );
-          //     },
-          //     icon: const Icon(Icons.refresh_sharp)
-          // ),
-
         ],
       ),
       body: ListView(

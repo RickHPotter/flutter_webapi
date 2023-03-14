@@ -29,8 +29,8 @@ class Journal {
   Journal.empty()
     : id = '0', // so far, only empty used is retrieving from API
       hash = const Uuid().v1(),
-      title = "Untitled",
-      content = "No Content Room",
+      title = "",
+      content = "",
       createdAt = DateTime.now(),
       updatedAt = DateTime.now();
 

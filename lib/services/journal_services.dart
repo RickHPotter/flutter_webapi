@@ -24,6 +24,7 @@ class JournalService {
 
   Future<List<Journal>> getAll() async {
     http.Response response = await client.get(Uri.http(url, resource));
+    //.timeout(const Duration(seconds: 3)); this would have to be handled and wrapped in try catch
     if (response.statusCode == 200) {
       final resp = Journal.toListOfJournals(response.body);
       return resp;
