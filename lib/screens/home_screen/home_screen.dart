@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webapi_first_course/services/auth_service.dart';
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
 import 'package:quickalert/quickalert.dart';
@@ -99,7 +100,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     .primary,
               );
             }
-          ),
+          ),IconButton(
+              onPressed: () {
+                AuthService service = AuthService();
+                service.logout();
+                Navigator.pushNamed(context, "login");
+              }
+              ,
+              icon: const Icon(Icons.logout)),
         ],
       ),
       body: ListView(
@@ -119,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // firstly, all data from the DB goes to the API
     List<Journal> pendingDelete = await Dao.findAll([-1]);
 
+    debugPrint("delete later");
     for (Journal journal in pendingDelete) {
       bool result = await service.delete(journal.hash);
       if (result) {
@@ -127,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
+    debugPrint("insert later");
     List<Journal> pendingInsert = await Dao.findAll([1]);
     for (Journal journal in pendingInsert) {
       bool result = await service.post(journal);
@@ -136,6 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
+    debugPrint("updating later");
     List<Journal> pendingUpdate = await Dao.findAll([2]);
     for (Journal journal in pendingUpdate) {
       bool result = await service.patch(journal);
@@ -147,8 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // secondly, all data from API comes to the DB
     List<Journal> list = await service.getAll();
-    for (var e in list) {
-      await Dao.insert(e);  // implement later a batch insert
+    if (list.isNotEmpty) {
+      for (var e in list) {
+        await Dao.insert(e);  // TODO: implement later a batch insert
+      }
     }
 
     String ret = '$countDB changes updated and ${list.length} changes retrieved.';

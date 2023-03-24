@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/screens/components/colour_dot.dart';
 import 'package:flutter_webapi_first_course/theme/theme_colours.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -139,31 +140,41 @@ class JournalCard extends StatelessWidget {
     }
   }
 
-  callAddJournalScreen(BuildContext context) {
-    Navigator.pushNamed(
-      context,
-      "add-journal",
-      arguments: Journal(
-        id: '1', // adding a journal is insert-mode, therefore 1, but this wont matter
-        hash: const Uuid().v1(),
-        title: "",
-        content: "",
-        createdAt: showedDate,
-        updatedAt: showedDate,
-      ),
-    ).then((value) {
-      if (value != null && value == true) {
-        if(context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Center(child: Text('...saving...', style: Theme.of(context).textTheme.titleSmall,)),
-              duration: const Duration(seconds: 2),
-            ),
-          );
+  callAddJournalScreen(BuildContext context) async {
+    // TODO: Either deal with it or accept that this is poor
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String userId = preferences.getInt("id").toString();
+
+    if (context.mounted) {
+      Navigator.pushNamed(
+        context,
+        "add-journal",
+        arguments: Journal(
+          id: '1',
+          // adding a journal is insert-mode, therefore 1, but this wont matter
+          hash: "$userId.H.${const Uuid().v1()}",
+          title: "",
+          content: "",
+          createdAt: showedDate,
+          updatedAt: showedDate,
+        ),
+      ).then((value) {
+        if (value != null && value == true) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text('...saving...', style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleSmall,)),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
         }
-      }
-      refreshFunction();
-    });
+        refreshFunction();
+      });
+    }
   }
 
   callEditJournalScreen(BuildContext context) {
@@ -186,6 +197,7 @@ class JournalCard extends StatelessWidget {
 
   callDelete(BuildContext context) async {
     await Dao.prepareForDelete(journal!);
+    //await Dao.delete(journal!.hash); // testing
     refreshFunction();
     return true;
   }

@@ -31,8 +31,8 @@ ThemeData myTheme = ThemeData(
     // TYPOGRAPHY
     textTheme: TextTheme(
       titleLarge: ThemeTypography.gFonts('Quicksand', 26, FontWeight.w600, Colors.white), // unused
-      titleMedium: ThemeTypography.gFonts('Handlee', 22, FontWeight.w400, Colors.white),
-      titleSmall: ThemeTypography.gFonts('Handlee', 14, FontWeight.w300, Colors.white),
+      titleMedium: ThemeTypography.gFonts('Rajdhani', 22, FontWeight.w400, Colors.white),
+      titleSmall: ThemeTypography.gFonts('Rajdhani', 14, FontWeight.w300, Colors.white),
 
       bodyLarge: ThemeTypography.gFonts('Fira Code', 26, FontWeight.w600, Colors.white),
       bodyMedium: ThemeTypography.gFonts('Fira Code', 16, FontWeight.w400, Colors.white),

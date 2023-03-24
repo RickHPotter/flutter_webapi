@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:uuid/uuid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Journal {
   String id;
@@ -28,7 +28,7 @@ class Journal {
 
   Journal.empty()
     : id = '0', // so far, only empty used is retrieving from API
-      hash = const Uuid().v1(),
+      hash = "definitely not a hash, something went wrong",
       title = "",
       content = "",
       createdAt = DateTime.now(),
@@ -37,15 +37,35 @@ class Journal {
   Map<String, dynamic> toMap() {
     return {
       "hash": hash,
+      "userId": getUserId(),
       "title": title,
       "content": content,
-      "createdAt": createdAt.toString(),
-      "updatedAt": updatedAt.toString(),
+      "createdAt": "${createdAt.toIso8601String()}-03:00",  // a lil gambiarra
+      "updatedAt": "${updatedAt.toIso8601String()}-03:00",
     };
   }
 
-  String toJson() {
-    return json.encode(toMap());
+  Future<int?> getUserId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getInt("id");
+  }
+
+  Future<String> toJson() async {
+    String jSON = "";
+    await getUserId().then(
+            (id) =>
+            jSON = json.encode(
+                {
+                  "hash": hash,
+                  "userId": id,
+                  "title": title,
+                  "content": content,
+                  // a lil gambiarra, "Z" sqlite not welcome in postgres, -03:00 needed in postgres
+                  "createdAt": "${createdAt.toIso8601String().replaceAll("Z", "")}-03:00",
+                  "updatedAt": "${updatedAt.toIso8601String()}-03:00",
+                }
+            ));
+    return jSON;
   }
 
   static Journal toJournal(String strJson) {

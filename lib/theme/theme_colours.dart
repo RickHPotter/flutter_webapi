@@ -18,7 +18,7 @@ class ThemeColours {
   };
   static const MaterialColor primaryColour = MaterialColor(0xFF003366, blueish);
 
-  static const Map<int, Color> pinkish =
+  static const Map<int, Color> redish =
   {
     50: Color.fromRGBO(255, 62, 23, 0.1),
     100:Color.fromRGBO(255, 62, 23, 0.2),
@@ -31,7 +31,7 @@ class ThemeColours {
     800:Color.fromRGBO(255, 62, 23, 0.9),
     900:Color.fromRGBO(255, 62, 23, 1.0),
   };
-  static const MaterialColor secondaryColour = MaterialColor(0xDDFF3E17, pinkish);
+  static const MaterialColor secondaryColour = MaterialColor(0xDDFF3E17, redish);
 
   static const Map<int, Color> weekdays =
   {

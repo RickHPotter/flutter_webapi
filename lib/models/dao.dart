@@ -18,6 +18,7 @@ class Dao {
     _tableName = 'journalTable',
 
     _id = 'id',
+    //_userId = "user_id",
     _hash = 'hash',
     _title = 'title',
     _content = 'content',
@@ -60,6 +61,7 @@ class Dao {
 
     journalMap.addAll({
       _id: action,
+      //_userId: journal.getUserId(),
       _hash: journal.hash,
       _title: journal.title,
       _content: journal.content,
