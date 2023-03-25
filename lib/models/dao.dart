@@ -2,6 +2,7 @@ import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:flutter_webapi_first_course/database/database.dart';
+import 'package:uuid/uuid.dart';
 import 'journal.dart';
 
 class Dao {
@@ -131,8 +132,9 @@ class Dao {
       log.i('[DAO] [CREATE] Journal ${journal.hash} has been inserted.');
     }
     else {
-      // TODO: ONLY CASE WHEN IT REACHES HERE IS ONE IN A BILLION UUID REPEATED ITSELF, MURPHY'S LAW
       log.i('[DAO] [CREATE] Journal ${journal.hash} already exists.');
+      journal.hash = journal.hash.split(".H.")[0] + const Uuid().v1();
+      insert(journal, action: action);  // this is crazy but it will most likely not get here
     }
     return (result > 0);
   }

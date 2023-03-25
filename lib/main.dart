@@ -18,7 +18,6 @@ void main() async {
 Future<bool> verifyToken() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.getString("token") != null) {
-    // TODO: this is just not enough, gotta make sure that the Token is valid
      return true;
   }
   return false;

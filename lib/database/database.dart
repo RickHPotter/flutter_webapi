@@ -13,7 +13,6 @@ class DataBaseHelper {
   Future<Database> initDB(String from) async {
     String path = await getDatabasesPath();
     String databaseName = await getDBName();
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA $databaseName");
     var db = await openDatabase(
       join(path, databaseName),
       onCreate: (db, version) async => await db.execute(Dao.tableSQL),

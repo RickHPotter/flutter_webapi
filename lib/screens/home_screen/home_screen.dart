@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webapi_first_course/services/auth_service.dart';
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
-import 'package:quickalert/quickalert.dart';
-
+import 'package:flutter_webapi_first_course/screens/components/modal_alert.dart';
+import 'package:flutter_webapi_first_course/services/auth_service.dart';
 import 'package:flutter_webapi_first_course/screens/home_screen/widgets/home_screen_list.dart';
 import 'package:flutter_webapi_first_course/services/journal_services.dart';
 import 'package:flutter_webapi_first_course/models/dao.dart';
@@ -58,55 +57,41 @@ class _HomeScreenState extends State<HomeScreen> {
         onChange: (didOpen) {
           setState(() => isOpened = didOpen);
         },
-        child: IgnorePointer(
-            ignoring: isOpened,
-            child: scaffold()
-        )
-    );
+        child: IgnorePointer(ignoring: isOpened, child: scaffold()));
   }
 
   Widget scaffold() {
     return Scaffold(
       appBar: AppBar(
-        title: Text( //journal.createdAt.day.toString().padLeft(2, '0')
+        title: Text(
+          //journal.createdAt.day.toString().padLeft(2, '0')
           "${today.day.toString().padLeft(2, '0')} | ${today.month} | ${today.year}",
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(6, 4, 0, 6),
           child: ElevatedButton(
-            child: Icon(
-                Icons.menu_open_rounded,
-                color: Theme.of(context).colorScheme.background
-            ),
-            onPressed: () {
-              toggleMenu();
-            }
-          ),
+              child: Icon(Icons.menu_open_rounded,
+                  color: Theme.of(context).colorScheme.background),
+              onPressed: () {
+                toggleMenu();
+              }),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.api_outlined),
-            onPressed: () {
-              retrieveFromApi();
-              QuickAlert.show(
-                context: context,
-                type: QuickAlertType.info,
-                title: 'Success.',
-                text: '___________',
-                confirmBtnColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary,
-              );
-            }
-          ),IconButton(
+              icon: const Icon(Icons.api_outlined),
+              onPressed: () {
+                retrieveFromApi();
+                quickAlertInfo(context, "___________",
+                    title: "Success.",
+                    confirmBtnColor: Theme.of(context).colorScheme.primary);
+              }),
+          IconButton(
               onPressed: () {
                 AuthService service = AuthService();
                 service.logout();
                 Navigator.pushNamed(context, "login");
-              }
-              ,
+              },
               icon: const Icon(Icons.logout)),
         ],
       ),
@@ -123,57 +108,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // TODO :  SOME REFACTORING DOWN HERE, I SUPPOSE
   void retrieveFromApi() async {
-    int countDB = 0;
     // firstly, all data from the DB goes to the API
     List<Journal> pendingDelete = await Dao.findAll([-1]);
-
-    debugPrint("delete later");
     for (Journal journal in pendingDelete) {
-      bool result = await service.delete(journal.hash);
-      if (result) {
-        await Dao.delete(journal.hash);
-        countDB++;
-      }
+      await service.delete(journal.hash)
+      .then((value) async => (value) ? await Dao.delete(journal.hash) : null)
+          .catchError((error) => error);
     }
 
-    debugPrint("insert later");
     List<Journal> pendingInsert = await Dao.findAll([1]);
     for (Journal journal in pendingInsert) {
-      bool result = await service.post(journal);
-      if (result) {
-        await Dao.update(journal);
-        countDB++;
-      }
+      await service.post(journal)
+      .then((value) async => (value) ? await Dao.update(journal) : null)
+          .catchError((error) => error);
     }
 
-    debugPrint("updating later");
     List<Journal> pendingUpdate = await Dao.findAll([2]);
     for (Journal journal in pendingUpdate) {
-      bool result = await service.patch(journal);
-      if (result) {
-        await Dao.update(journal);
-        countDB++;
-      }
+      await service.patch(journal)
+      .then((value) async => (value) ? await Dao.update(journal) : null)
+          .catchError((error) => error);
     }
 
     // secondly, all data from API comes to the DB
-    List<Journal> list = await service.getAll();
-    if (list.isNotEmpty) {
-      for (var e in list) {
-        await Dao.insert(e);  // TODO: implement later a batch insert
-      }
+    List<Journal> list = await service.getAll().catchError((error) => error);
+    for (var e in list) {
+      await Dao.insert(e); // TODO: implement later a batch insert
     }
-
-    String ret = '$countDB changes updated and ${list.length} changes retrieved.';
-    debugPrint('RETURN : $ret');
 
     refreshFromDB();
   }
 
-  void refreshFromDB() async { // i really wish i knew why async makes a difference in a non-await function,
+  void refreshFromDB() async {
+    // i really wish i knew why async makes a difference in a non-await function,
     Dao.findAll([0, 1, 2])
-        .then((list) => database = { for (var e in list) e.hash : e })
-        .whenComplete(() => setState(() {})
-    );
+        .then((list) => database = {for (var e in list) e.hash: e})
+        .catchError((error) => error)
+        .whenComplete(() => setState(() {}));
   }
 }

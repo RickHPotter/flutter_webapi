@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webapi_first_course/screens/home_screen/home_screen.dart';
-import 'package:flutter_webapi_first_course/screens/overview_screen/overview_screen.dart';
-
-import 'about_screen/about_screen.dart';
 
 class BuildMenu extends StatelessWidget {
   const BuildMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 0),
       child: Column(
@@ -24,45 +21,42 @@ class BuildMenu extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.background,
                   radius: 22.0,
                 ),
-                const SizedBox(height: 16.0),
-                Text(
-                  "Hello, ポッテル・リッキ",
-                  style: Theme.of(context).textTheme.labelMedium,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  child: Text(
+                    "Hello, ポッテル・リッキ",
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
                 ),
-                const SizedBox(height: 20.0),
               ],
             ),
           ),
-          ListTile(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder:(context) => const HomeScreen()));
-            },
-            leading: Icon(Icons.sunny, size: 25.0, color: Theme.of(context).colorScheme.background),
-            title: Text("sept jours", style: Theme.of(context).textTheme.labelMedium,),
-            textColor: Colors.white,
-            dense: true,
+          listTile(
+              context, "home", Icons.sunny, "sept jours",
+              Theme.of(context).textTheme.labelMedium
           ),
-          ListTile(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder:(context) => const Overview()));
-            },
-            leading: const Icon(
-                Icons.motion_photos_on, size: 25.0, color: Colors.white),
-            title: Text("le panorama", style: Theme.of(context).textTheme.labelSmall,),
-            textColor: Colors.white,
-            dense: true,
+          listTile(
+              context, "overview", Icons.motion_photos_on, "environ",
+              Theme.of(context).textTheme.labelSmall
           ),
-          ListTile(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder:(context) => const About()));
-            },
-            leading: const Icon(Icons.star, size: 25.0, color: Colors.white),
-            title: Text("environ", style: Theme.of(context).textTheme.labelSmall,),
-            textColor: Colors.white,
-            dense: true,
+          listTile(
+              context, "about", Icons.star, "environ",
+              Theme.of(context).textTheme.labelSmall
           ),
         ],
       ),
+    );
+  }
+
+  Widget listTile(BuildContext context, String route, IconData icon, String text, TextStyle? style) {
+    return ListTile(
+      onTap: () {
+        Navigator.pushNamed(context, route);
+      },
+      leading: Icon(icon, size: 25.0, color: Colors.white),
+      title: Text(text, style: style),
+      textColor: Colors.white,
+      dense: true,
     );
   }
 }

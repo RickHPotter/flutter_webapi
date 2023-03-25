@@ -141,7 +141,6 @@ class JournalCard extends StatelessWidget {
   }
 
   callAddJournalScreen(BuildContext context) async {
-    // TODO: Either deal with it or accept that this is poor
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String userId = preferences.getInt("id").toString();
 

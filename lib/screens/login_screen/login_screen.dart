@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:quickalert/quickalert.dart';
-
+import 'package:flutter_webapi_first_course/screens/components/modal_alert.dart';
 import '../../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,9 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _passwordController = TextEditingController();
 
-  late final AuthService service  = AuthService();
+  late final AuthService service = AuthService();
 
   late bool _isLogIn = true;
+  late bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-            border:BorderDirectional(top: BorderSide(width: 80)),
-            color: Colors.black54
-        ),
+            border: BorderDirectional(top: BorderSide(width: 80)),
+            color: Colors.black54),
         child: Form(
           child: Center(
             child: SingleChildScrollView(
@@ -45,7 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Sept Jours",
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  Text("by Alura and Rick",
+                  Text(
+                    "by Alura and Rick",
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const Padding(
@@ -53,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Divider(thickness: 3, color: Colors.black87),
                   ),
                   Text(
-                      "WELCOME",
+                    "WELCOME",
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   TextFormField(
@@ -68,14 +69,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: InputDecoration(label: Text("Password",
-                      style: Theme.of(context).textTheme.bodyMedium,)),
+                    decoration: InputDecoration(
+                        label: Text(
+                      "Password",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
                     keyboardType: TextInputType.visiblePassword,
                     maxLength: 16,
                     obscureText: true,
                   ),
                   loginDynamic(context),
-
                 ],
               ),
             ),
@@ -87,10 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget loginDynamic(BuildContext context) {
     return InkWell(
-        onTap: (){
-          (_isLogIn)
-              ? login(context)
-              : signup(context);
+        onTap: () {
+          setState(() {
+            _isLoading = !_isLoading;
+          });
+          (_isLogIn) ? login(context) : signup(context);
         },
         onLongPress: () {
           setState(() {
@@ -102,63 +106,56 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 70,
           decoration: ShapeDecoration(
               shape: const CircleBorder(
-                  side: BorderSide(width: 1.0,
-                      color: Colors.black87
-                  ),
+                side: BorderSide(width: 1.0, color: Colors.black87),
               ),
               color: (_isLogIn)
                   ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary.withRed(15)
-          ),
+                  : Theme.of(context).colorScheme.secondary.withRed(15)),
           child: Center(
-            child: Text(
-              (_isLogIn)
-                  ? "Login"
-                  : "Signup",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            child: (_isLoading)
+                ? const CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.white,
+                  )
+                : Text((_isLogIn) ? "Login" : "Signup",
+                    style: Theme.of(context).textTheme.bodyMedium),
           ),
-        )
-    );
-
+        ));
   }
 
   login(BuildContext context) async {
     String email = _emailController.text;
     String password = _passwordController.text; // is this safe?
 
-    try {
-      await service.login(email: email, password: password).then(
-              (_) {
-                QuickAlert.show(
-                    context: context,
-                    type: QuickAlertType.info,
-                    text: "logged in"
-                );
-                Navigator.pushNamed(context, "home");
-              }
-      );
-    } on HttpException {
-      QuickAlert.show(context: context, type: QuickAlertType.info, text: "You failed.");
-    }
-
+    await service.login(email: email, password: password).then((_) {
+      quickAlertInfo(context, "logged in");
+      Navigator.pushNamed(context, "home");
+    }).catchError((error) {
+      quickAlertError(context, error.toString().split("Exception:")[1]);
+    }, test: (error) => error is TimeoutException).catchError((error) {
+      quickAlertError(context, error.toString().split("Exception:")[1]);
+    }, test: (error) => error is HttpException).whenComplete(() {
+      setState(() {
+        _isLoading = !_isLoading;
+      });
+    });
   }
 
   signup(BuildContext context) async {
     String email = _emailController.text;
     String password = _passwordController.text; // is this safe?
 
-    try {
-      await service.signup(email: email, password: password).then(
-              (value) => QuickAlert.show(
-              context: context,
-              type: QuickAlertType.info,
-              text: "signed up"
-          )
-      );
-    } on HttpException {
-      QuickAlert.show(context: context, type: QuickAlertType.info, text: "You failed.");
-    }
-
+    await service
+        .signup(email: email, password: password)
+        .then((value) => quickAlertInfo(context, "signed up"))
+        .catchError((error) {
+      quickAlertError(context, error.toString().split("Exception:")[1]);
+    }, test: (error) => error is TimeoutException).catchError((error) {
+      quickAlertError(context, error.toString().split("Exception:")[1]);
+    }, test: (error) => error is HttpException).whenComplete(() {
+      setState(() {
+        _isLoading = !_isLoading;
+      });
+    });
   }
 }
