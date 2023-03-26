@@ -12,42 +12,46 @@ class AuthService {
   String url = WebService.url;
   http.Client client = WebService.start();
 
-  Future<bool> login({required String email, required String password}) async {
-    http.Response response = await client
+  login({required String email, required String password}) async {
+    await client
         .post(
-      Uri.http(url, "/login"),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({"email": email, "password": password}),
-    )
+          Uri.http(url, "/login"),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({"email": email, "password": password}),
+        )
+        .catchError(
+            (error) => throw TimeoutException("Our Servers Are Probably Down."),
+            test: (error) => error is TimeoutException)
         .catchError((error) {
-      throw TimeoutException("Our Servers Are Probably Down.");
-    }, test: (error) => error is TimeoutException);
-
-    if (response.statusCode != 202) {
-      Map<String, dynamic> content = json.decode(response.body);
-      throw HttpException(content["Error"]);
-    }
-    saveUserInfo(response.body);
-    return true;
+      throw const SocketException("No Internet Access.");
+    }, test: (error) => error is SocketException).then((response) {
+      if (response.statusCode != 202) {
+        Map<String, dynamic> content = json.decode(response.body);
+        throw HttpException(content["Error"]);
+      }
+      saveUserInfo(response.body);
+    });
   }
 
-  Future<bool> signup({required String email, required String password}) async {
-    http.Response response = await client
+  signup({required String email, required String password}) async {
+    await client
         .post(
-      Uri.http(url, "/signup"),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({"email": email, "password": password}),
-    )
+          Uri.http(url, "/signup"),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({"email": email, "password": password}),
+        )
+        .catchError(
+            (error) => throw TimeoutException("Our Servers Are Probably Down."),
+            test: (error) => error is TimeoutException)
         .catchError((error) {
-      throw TimeoutException("Our Servers Are Probably Down.");
-    }, test: (error) => error is TimeoutException);
-
-    if (response.statusCode != 202) {
-      Map<String, dynamic> content = json.decode(response.body);
-      throw HttpException(content["Error"]);
-    }
-    saveUserInfo(response.body);
-    return true;
+      throw const SocketException("No Internet Access.");
+    }, test: (error) => error is SocketException).then((response) {
+      if (response.statusCode != 202) {
+        Map<String, dynamic> content = json.decode(response.body);
+        throw HttpException(content["Error"]);
+      }
+      saveUserInfo(response.body);
+    });
   }
 
   saveUserInfo(String response) async {

@@ -126,4 +126,31 @@ class JournalService {
     }
     return true;
   }
+
+  Future<bool> ping() async {
+    Map<String, String> defHeaders = await defaultHeaders();
+    http.Response response = await client
+        .get(Uri.http(url, "/ping"), headers: defHeaders)
+        .catchError(
+            (error) => throw TimeoutException("Our Servers Are Probably Down."),
+            test: (error) => error is TimeoutException)
+        .catchError(
+            (error) =>
+                throw const SocketException("You have no juice (internet)."),
+            test: (error) => error is SocketException);
+
+    switch (response.statusCode) {
+      case 202:
+        return true;
+      default:
+        String errorContent = json.decode(response.body)["Error"];
+        switch (errorContent) {
+          case "Session Cookie has expired!":
+            throw const HttpException(
+                "Login Session Expired. Please logout and login again.");
+          default:
+            throw HttpException(errorContent);
+        }
+    }
+  }
 }

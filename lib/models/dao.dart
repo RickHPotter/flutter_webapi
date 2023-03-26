@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:flutter_webapi_first_course/database/database.dart';
 import 'package:uuid/uuid.dart';
+import '../services/journal_services.dart';
 import 'journal.dart';
 
 class Dao {
@@ -19,7 +20,6 @@ class Dao {
     _tableName = 'journalTable',
 
     _id = 'id',
-    //_userId = "user_id",
     _hash = 'hash',
     _title = 'title',
     _content = 'content',
@@ -62,7 +62,6 @@ class Dao {
 
     journalMap.addAll({
       _id: action,
-      //_userId: journal.getUserId(),
       _hash: journal.hash,
       _title: journal.title,
       _content: journal.content,
@@ -74,6 +73,10 @@ class Dao {
 
     return journalMap;
   }
+
+  /*
+  DEV INTERFACE
+  */
 
   // READ
   static Future<List<Journal>> orderedGet() async {
@@ -133,10 +136,23 @@ class Dao {
     }
     else {
       log.i('[DAO] [CREATE] Journal ${journal.hash} already exists.');
-      journal.hash = journal.hash.split(".H.")[0] + const Uuid().v1();
-      insert(journal, action: action);  // this is crazy but it will most likely not get here
     }
     return (result > 0);
+  }
+
+  static insertBatch(List<Journal> list, {String action = 'NOUGHT'}) async {
+    final Database db = await dbHelper.initDB('[CREATE BATCH]');
+
+    // not checking if it exists means less db operations, but is it safe?
+    Batch batch = db.batch();
+    for (Journal journal in list) {
+      batch.insert(
+        _tableName,
+        toMap(journal, actions[action]!),
+      );
+    }
+    batch.commit(noResult: true);
+    log.i('[DAO] [CREATE] ${list.length} Journals have been attempted to be inserted.');
   }
 
   // UPDATE
@@ -178,7 +194,9 @@ class Dao {
       log.i('[DAO] [CREATE] Journal ${journal.hash} has been inserted.');
     }
     else {
-      log.i('[DAO] [CREATE] Journal ${journal.hash} already exists.');
+      log.i('[DAO] [CREATE] ${journal.hash} already in use. Creating a new one.');
+      journal.hash = journal.hash.split(".H.")[0] + const Uuid().v1();
+      prepareForInsert(journal);
     }
     return (result > 0);
   }
@@ -211,5 +229,43 @@ class Dao {
     }
 
     return update(journal, action: 'DELETE');
+  }
+
+  static Future<Map<String, Journal>> refreshFromDB() async {
+    Map<String, Journal> database = {};
+    await Dao.findAll([0, 1, 2])
+        .then((list) => database = {for (var e in list) e.hash: e})
+        .catchError((error) => error);
+    return database;
+  }
+
+  static retrieveFromAPI() async {
+    JournalService service = JournalService();
+
+    // ! Firstly, all data from the DB goes to the API
+    List<Journal> pendingDelete = await Dao.findAll([-1]);
+    for (Journal journal in pendingDelete) {
+      await service.delete(journal.hash)
+          .then((value) async => (value) ? await Dao.delete(journal.hash) : null)
+          .catchError((error) => error);
+    }
+
+    List<Journal> pendingInsert = await Dao.findAll([1]);
+    for (Journal journal in pendingInsert) {
+      await service.post(journal)
+          .then((value) async => (value) ? await Dao.update(journal) : null)
+          .catchError((error) => error);
+    }
+
+    List<Journal> pendingUpdate = await Dao.findAll([2]);
+    for (Journal journal in pendingUpdate) {
+      await service.patch(journal)
+          .then((value) async => (value) ? await Dao.update(journal) : null)
+          .catchError((error) => error);
+    }
+
+    // ! Secondly, all data from API comes to the DB
+    List<Journal> list = await service.getAll().catchError((error) => error);
+    await Dao.insertBatch(list);
   }
 }

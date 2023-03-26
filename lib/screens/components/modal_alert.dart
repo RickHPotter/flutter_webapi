@@ -27,7 +27,7 @@ quickAlertConfirm(BuildContext context, String text, dynamic onConfirmBtnTap,
   QuickAlert.show(
       type: QuickAlertType.confirm,
       context: context,
-      widget: Text(text, style: ThemeTypography.rajdhaniPrimary),
+      widget: Text(text, textAlign: TextAlign.center, style: ThemeTypography.rajdhaniPrimary),
       title: title,
       titleColor: Theme.of(context).colorScheme.primary,
       cancelBtnText: 'not like that',

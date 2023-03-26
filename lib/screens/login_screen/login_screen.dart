@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/screens/components/modal_alert.dart';
 import '../../services/auth_service.dart';
@@ -91,9 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget loginDynamic(BuildContext context) {
     return InkWell(
         onTap: () {
-          setState(() {
-            _isLoading = !_isLoading;
-          });
+          _isLoading = !_isLoading;
+          setState(() {});
           (_isLogIn) ? login(context) : signup(context);
         },
         onLongPress: () {
@@ -127,35 +123,36 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = _emailController.text;
     String password = _passwordController.text; // is this safe?
 
-    await service.login(email: email, password: password).then((_) {
-      quickAlertInfo(context, "logged in");
-      Navigator.pushNamed(context, "home");
-    }).catchError((error) {
-      quickAlertError(context, error.toString().split("Exception:")[1]);
-    }, test: (error) => error is TimeoutException).catchError((error) {
-      quickAlertError(context, error.toString().split("Exception:")[1]);
-    }, test: (error) => error is HttpException).whenComplete(() {
-      setState(() {
-        _isLoading = !_isLoading;
-      });
-    });
+    await service
+        .login(email: email, password: password)
+        .then((_) {
+          quickAlertInfo(context, "logged in");
+          Navigator.pushNamed(context, "home");
+        })
+        .catchError((error) =>
+            quickAlertError(context, error.toString().split("Exception:")[1]))
+        .whenComplete(() {
+          _isLoading = !_isLoading;
+          setState(() {});
+        });
   }
 
   signup(BuildContext context) async {
     String email = _emailController.text;
-    String password = _passwordController.text; // is this safe?
+    String password = _passwordController.text; // again, is this safe?
 
     await service
         .signup(email: email, password: password)
-        .then((value) => quickAlertInfo(context, "signed up"))
-        .catchError((error) {
-      quickAlertError(context, error.toString().split("Exception:")[1]);
-    }, test: (error) => error is TimeoutException).catchError((error) {
-      quickAlertError(context, error.toString().split("Exception:")[1]);
-    }, test: (error) => error is HttpException).whenComplete(() {
-      setState(() {
-        _isLoading = !_isLoading;
-      });
-    });
+        .then((_) {
+          quickAlertInfo(context, "signed up");
+          // imo, it's cringe having to login after signup
+          Navigator.pushNamed(context, "home");
+        })
+        .catchError((error) =>
+            quickAlertError(context, error.toString().split("Exception:")[1]))
+        .whenComplete(() {
+          _isLoading = !_isLoading;
+          setState(() {});
+        });
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webapi_first_course/services/journal_services.dart';
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
 import 'package:flutter_webapi_first_course/screens/components/modal_alert.dart';
 import 'package:flutter_webapi_first_course/services/auth_service.dart';
 import 'package:flutter_webapi_first_course/screens/home_screen/widgets/home_screen_list.dart';
-import 'package:flutter_webapi_first_course/services/journal_services.dart';
 import 'package:flutter_webapi_first_course/models/dao.dart';
 import 'package:flutter_webapi_first_course/models/journal.dart';
 import 'package:flutter_webapi_first_course/screens/menu.dart';
@@ -20,8 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime today = DateTime.now();
 
   final ScrollController _listScrollController = ScrollController();
-  JournalService service = JournalService();
   Map<String, Journal> database = {};
+
+  AuthService service = AuthService();
 
   // ----- Side Menu
   final GlobalKey<SideMenuState> sideMenuKey = GlobalKey<SideMenuState>();
@@ -82,15 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.api_outlined),
               onPressed: () {
                 retrieveFromApi();
-                quickAlertInfo(context, "___________",
-                    title: "Success.",
-                    confirmBtnColor: Theme.of(context).colorScheme.primary);
               }),
           IconButton(
               onPressed: () {
-                AuthService service = AuthService();
-                service.logout();
-                Navigator.pushNamed(context, "login");
+                logOut(context);
               },
               icon: const Icon(Icons.logout)),
         ],
@@ -106,44 +102,31 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // TODO :  SOME REFACTORING DOWN HERE, I SUPPOSE
   void retrieveFromApi() async {
-    // firstly, all data from the DB goes to the API
-    List<Journal> pendingDelete = await Dao.findAll([-1]);
-    for (Journal journal in pendingDelete) {
-      await service.delete(journal.hash)
-      .then((value) async => (value) ? await Dao.delete(journal.hash) : null)
-          .catchError((error) => error);
-    }
-
-    List<Journal> pendingInsert = await Dao.findAll([1]);
-    for (Journal journal in pendingInsert) {
-      await service.post(journal)
-      .then((value) async => (value) ? await Dao.update(journal) : null)
-          .catchError((error) => error);
-    }
-
-    List<Journal> pendingUpdate = await Dao.findAll([2]);
-    for (Journal journal in pendingUpdate) {
-      await service.patch(journal)
-      .then((value) async => (value) ? await Dao.update(journal) : null)
-          .catchError((error) => error);
-    }
-
-    // secondly, all data from API comes to the DB
-    List<Journal> list = await service.getAll().catchError((error) => error);
-    for (var e in list) {
-      await Dao.insert(e); // TODO: implement later a batch insert
-    }
-
-    refreshFromDB();
+    JournalService journalService = JournalService();
+    await journalService
+        .ping() // test if there's connection and API is up
+        .then((value) async {
+      await Dao.retrieveFromAPI();
+      refreshFromDB();
+      if (context.mounted) {
+        quickAlertInfo(context, "___________",
+            title: "Success.",
+            confirmBtnColor: Theme.of(context).colorScheme.primary);
+      }
+    }).catchError((error) {
+      quickAlertError(context, error.toString().split("Exception:")[1]);
+    });
   }
 
   void refreshFromDB() async {
-    // i really wish i knew why async makes a difference in a non-await function,
-    Dao.findAll([0, 1, 2])
-        .then((list) => database = {for (var e in list) e.hash: e})
-        .catchError((error) => error)
-        .whenComplete(() => setState(() {}));
+    database = await Dao.refreshFromDB().whenComplete(() => setState(() {}));
+  }
+
+  void logOut(BuildContext context) {
+    quickAlertConfirm(context, "Are you sure you want to logout?", () {
+      service.logout;
+      Navigator.pushNamed(context, "login");
+    });
   }
 }
