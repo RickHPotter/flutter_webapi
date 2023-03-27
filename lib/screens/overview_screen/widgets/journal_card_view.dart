@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../helpers/weekday.dart';
 import '../../../models/journal.dart';
+import '../../../theme/theme_typography.dart';
 
 class JournalCardView extends StatelessWidget {
   final Journal journal;
@@ -16,7 +18,7 @@ class JournalCardView extends StatelessWidget {
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topLeft: Radius.circular(5), topRight: Radius.circular(5))
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {}, //callViewJournal(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,16 +35,20 @@ class JournalCardView extends StatelessWidget {
                 ),
             ),
             Container(
-              padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+              padding: const EdgeInsets.fromLTRB(4, 16, 4, 8),
               child: Text(
-                  journal.title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineLarge,
+                journal.title,
+                textAlign: TextAlign.center, maxLines: 3, overflow: TextOverflow.ellipsis,
+                style: ThemeTypography.gFonts('Rajdhani', 22, FontWeight.w400, WeekDay(journal.createdAt.weekday).colour),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  callViewJournal() async {
+    // TODO: Create a read-only version of EditJournal.
   }
 }

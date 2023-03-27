@@ -30,7 +30,6 @@ ThemeData myTheme = ThemeData(
 
     // TYPOGRAPHY
     textTheme: TextTheme(
-      titleLarge: ThemeTypography.gFonts('Quicksand', 26, FontWeight.w600, Colors.white), // unused
       titleMedium: ThemeTypography.gFonts('Rajdhani', 22, FontWeight.w400, Colors.white),
       titleSmall: ThemeTypography.gFonts('Rajdhani', 14, FontWeight.w300, Colors.white),
 
@@ -41,10 +40,5 @@ ThemeData myTheme = ThemeData(
       labelLarge: ThemeTypography.gFonts('Sora', 12, FontWeight.w400, Colors.white),  // slidable is adamant about being a labelLarge
       labelMedium: ThemeTypography.gFonts('Sora', 16, FontWeight.w600, Colors.white),
       labelSmall: ThemeTypography.gFonts('Sora', 16, FontWeight.w300, Colors.white),
-
-      headlineLarge: ThemeTypography.gFonts('Cinzel', 26, FontWeight.w400, Colors.white),
-      headlineMedium: ThemeTypography.gFonts('Cinzel', 22, FontWeight.w300, Colors.white), // unused
-      headlineSmall: ThemeTypography.gFonts('Cinzel', 16, FontWeight.w300, Colors.white), // unused
-
     )
 );

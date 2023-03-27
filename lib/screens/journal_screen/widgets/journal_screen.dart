@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../helpers/weekday.dart';
 import '../../../models/journal.dart';
+import '../../../theme/theme_typography.dart';
 
 class JournalScreen extends StatelessWidget {
   final Journal journal;
@@ -42,7 +43,6 @@ class JournalScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Text(DefaultTextStyle.of(context).style.fontWeight!.toString()),
           Container(
             color: WeekDay(journal.createdAt.weekday).colour,
             height: 3,
@@ -51,15 +51,18 @@ class JournalScreen extends StatelessWidget {
             child: TextField(
               controller: _titleController,
               keyboardType: TextInputType.name,
-              style: Theme.of(context).textTheme.headlineLarge,
-              expands: true,
-              maxLines: null,
-              minLines: null,
+              style: ThemeTypography.gFonts('Rajdhani', 32, FontWeight.w400, WeekDay(journal.createdAt.weekday).colour),
               textAlign: TextAlign.center,
+              minLines: 1,
+              maxLines: 2,
               decoration: const InputDecoration(
                 enabledBorder: InputBorder.none,
               ),
             ),
+          ),
+          Container(
+            color: Colors.black,
+            height: 3,
           ),
           Flexible(
             flex: 6,

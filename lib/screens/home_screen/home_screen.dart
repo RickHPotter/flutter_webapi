@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webapi_first_course/services/journal_services.dart';
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
+import 'package:flutter_webapi_first_course/services/journal_services.dart';
 import 'package:flutter_webapi_first_course/screens/components/modal_alert.dart';
 import 'package:flutter_webapi_first_course/services/auth_service.dart';
 import 'package:flutter_webapi_first_course/screens/home_screen/widgets/home_screen_list.dart';

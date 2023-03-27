@@ -9,7 +9,6 @@ List<JournalCardView> generateListJournalCardsView(
   for (int c = 0; c < database.length; c++) {
     JournalCardView view = JournalCardView(journal: database[c]);
     list.add(view);
-    // print('index $c, created at: ${database[c].createdAt}');
   }
 
   return list;

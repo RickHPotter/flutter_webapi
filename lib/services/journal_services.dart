@@ -8,20 +8,14 @@ import 'dart:io';
 import 'package:flutter_webapi_first_course/services/web_client.dart';
 import 'package:flutter_webapi_first_course/models/journal.dart';
 
-// TODO: HANDLE INVALID TOKEN
-
 class JournalService {
   String url = WebService.url;
   http.Client client = WebService.start(timeOut: 5);
   static const String resource = '/api/v1/diary';
 
-  http.Response timeOut() {
-    return http.Response(
-      headers: {'Content-Type': 'application/json'},
-      json.encode("Our Servers Are Probably Down."),
-      501,
-    );
-  }
+  static const String noInternet = "Can't connect. You probably have no juice.";
+  static const String apiDown = "Can't connect. Our Servers are probably down.";
+  static const String expiredJWT = "Login Session Expired. Please logout and login again.";
 
   Future<String> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -48,12 +42,13 @@ class JournalService {
     Map<String, String> defHeaders = await defaultHeaders();
     http.Response response = await client
         .get(
-      Uri.http(url, '$resource/$hash'),
-      headers: defHeaders,
-    )
-        .catchError((error) {
-      return timeOut();
-    }, test: (error) => error is TimeoutException);
+          Uri.http(url, '$resource/$hash'),
+          headers: defHeaders,
+        )
+        .catchError((error) => throw TimeoutException(apiDown),
+            test: (error) => error is TimeoutException)
+        .catchError((error) => throw const SocketException(noInternet),
+            test: (error) => error is SocketException);
 
     if (response.statusCode != 200) {
       throw HttpException("Error: ${response.body}");
@@ -65,10 +60,16 @@ class JournalService {
 
   Future<List<Journal>> getAll() async {
     Map<String, String> defHeaders = await defaultHeaders();
-    http.Response response = await client.get(
-      Uri.http(url, resource),
-      headers: defHeaders,
-    );
+    http.Response response = await client
+        .get(
+          Uri.http(url, resource),
+          headers: defHeaders,
+        )
+        .catchError((error) => throw TimeoutException(apiDown),
+            test: (error) => error is TimeoutException)
+        .catchError((error) => throw const SocketException(noInternet),
+            test: (error) => error is SocketException);
+
     if (response.statusCode != 200) {
       throw HttpException("Error: ${response.body}");
     }
@@ -83,9 +84,10 @@ class JournalService {
     http.Response response = await client
         .post(Uri.http(url, '$resource/insert'),
             headers: defHeaders, body: jsonJournal)
-        .catchError((error) {
-      return timeOut();
-    }, test: (error) => error is TimeoutException);
+        .catchError((error) => throw TimeoutException(apiDown),
+            test: (error) => error is TimeoutException)
+        .catchError((error) => throw const SocketException(noInternet),
+            test: (error) => error is SocketException);
 
     if (response.statusCode != 201) {
       throw HttpException("Error: ${response.body}");
@@ -100,9 +102,10 @@ class JournalService {
     http.Response response = await client
         .patch(Uri.http(url, '$resource/update', {'hash': hash}),
             headers: defHeaders, body: jsonJournal)
-        .catchError((error) {
-      return timeOut();
-    }, test: (error) => error is TimeoutException);
+        .catchError((error) => throw TimeoutException(apiDown),
+            test: (error) => error is TimeoutException)
+        .catchError((error) => throw const SocketException(noInternet),
+            test: (error) => error is SocketException);
 
     if (response.statusCode != 200) {
       throw HttpException("Error: ${response.body}");
@@ -114,12 +117,13 @@ class JournalService {
     Map<String, String> defHeaders = await defaultHeaders();
     http.Response response = await client
         .delete(
-      Uri.http(url, '$resource/delete', {'hash': hash}),
-      headers: defHeaders,
-    )
-        .catchError((error) {
-      return timeOut();
-    }, test: (error) => error is TimeoutException);
+          Uri.http(url, '$resource/delete', {'hash': hash}),
+          headers: defHeaders,
+        )
+        .catchError((error) => throw TimeoutException(apiDown),
+            test: (error) => error is TimeoutException)
+        .catchError((error) => throw const SocketException(noInternet),
+            test: (error) => error is SocketException);
 
     if (response.statusCode != 200) {
       throw HttpException("Error: ${response.body}");
@@ -131,12 +135,9 @@ class JournalService {
     Map<String, String> defHeaders = await defaultHeaders();
     http.Response response = await client
         .get(Uri.http(url, "/ping"), headers: defHeaders)
-        .catchError(
-            (error) => throw TimeoutException("Our Servers Are Probably Down."),
+        .catchError((error) => throw TimeoutException(apiDown),
             test: (error) => error is TimeoutException)
-        .catchError(
-            (error) =>
-                throw const SocketException("You have no juice (internet)."),
+        .catchError((error) => throw const SocketException(noInternet),
             test: (error) => error is SocketException);
 
     switch (response.statusCode) {
@@ -144,13 +145,7 @@ class JournalService {
         return true;
       default:
         String errorContent = json.decode(response.body)["Error"];
-        switch (errorContent) {
-          case "Session Cookie has expired!":
-            throw const HttpException(
-                "Login Session Expired. Please logout and login again.");
-          default:
-            throw HttpException(errorContent);
-        }
+        throw HttpException(errorContent);
     }
   }
 }

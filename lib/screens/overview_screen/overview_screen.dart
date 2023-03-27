@@ -86,7 +86,6 @@ class _OverviewState extends State<Overview> {
 
   Widget rows() {
     return GridView.count(
-      //mainAxisAlignment: MainAxisAlignment.center,
       crossAxisCount: 2,
       children: generateListJournalCardsView (
           database: database,

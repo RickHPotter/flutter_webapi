@@ -20,12 +20,13 @@ class BuildMenu extends StatelessWidget {
                 CircleAvatar( // TODO : IMPLEMENT PICTURE UPLOAD
                   backgroundColor: Theme.of(context).colorScheme.background,
                   radius: 22.0,
+                  child: const Icon(Icons.my_library_books_rounded),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   child: Text(
-                    "Hello, ポッテル・リッキ",
-                    style: Theme.of(context).textTheme.labelMedium,
+                    "Hello, Dear Diary!",
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
               ],
@@ -33,10 +34,10 @@ class BuildMenu extends StatelessWidget {
           ),
           listTile(
               context, "home", Icons.sunny, "sept jours",
-              Theme.of(context).textTheme.labelMedium
+              Theme.of(context).textTheme.labelSmall
           ),
           listTile(
-              context, "overview", Icons.motion_photos_on, "environ",
+              context, "overview", Icons.panorama, "landscape",
               Theme.of(context).textTheme.labelSmall
           ),
           listTile(

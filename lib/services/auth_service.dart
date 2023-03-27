@@ -6,8 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_webapi_first_course/services/web_client.dart';
 
-// TODO: HANDLE INVALID TOKEN
-
 class AuthService {
   String url = WebService.url;
   http.Client client = WebService.start();

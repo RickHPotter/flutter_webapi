@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Simple Journal',
+      title: 'Sept Jours',
       debugShowCheckedModeBanner: false,
       theme: myTheme,
       themeMode: ThemeMode.dark,

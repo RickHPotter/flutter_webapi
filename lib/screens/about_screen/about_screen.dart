@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 
 import '../menu.dart';
@@ -77,14 +76,23 @@ class _AboutState extends State<About> {
       body: Container(
         padding: const EdgeInsets.all(2),
         alignment: AlignmentDirectional.topCenter,
-        child: Text(
-          'You can call me Rick.\n'
-          'I\'m just trying my best to succeed.\n'
-          'This is just the beginning.\n\n\n\n\n'
-          'If you don\'t keep up...\nI\'ll be the one managing YOUR team.',
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodyMedium,),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'You can call me Rick.\n'
+              'I\'m just trying my best to succeed, and this is just the beginning.\n\n\n\n\n'
+              'If you don\'t keep up...\nI\'ll be the one managing YOUR team.\n\n\n\n\n',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium,),
+            Text(
+              'For More Information, go to\n github.com/RickHPotter/sept_jours/',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,),
+          ],
+        ),
       ),
     );
   }
+
 }
