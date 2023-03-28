@@ -196,7 +196,6 @@ class JournalCard extends StatelessWidget {
 
   callDelete(BuildContext context) async {
     await Dao.prepareForDelete(journal!);
-    //await Dao.delete(journal!.hash); // testing
     refreshFunction();
     return true;
   }

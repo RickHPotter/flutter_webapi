@@ -48,7 +48,7 @@ class AuthService {
         Map<String, dynamic> content = json.decode(response.body);
         throw HttpException(content["Error"]);
       }
-      saveUserInfo(response.body);
+      login(email: email, password: password);
     });
   }
 

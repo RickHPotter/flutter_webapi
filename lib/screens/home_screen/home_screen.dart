@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void logOut(BuildContext context) {
     quickAlertConfirm(context, "Are you sure you want to logout?", () {
       service.logout;
-      Navigator.pushNamed(context, "login");
+      Navigator.pushReplacementNamed(context, "login");
     });
   }
 }

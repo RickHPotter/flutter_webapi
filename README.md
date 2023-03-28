@@ -90,7 +90,7 @@
 - It was a dev-like two weeks for me, there was no Alura video playing on the side, no book to read, just Android Studio and the internet, this is somewhat what it's supposed to be, you need to make decisions yourself, even if they're bad, because if they are and you can spot them or accept them when someone spots them for you, you can learn how to make it better bit by bit.
 
 ## 🏠 Endgame
-![My Project so far](https://github.com/RickHPotter/flutter_webapi/raw/master/gif.gif)
+![My Project so far](https://github.com/RickHPotter/sept_jours/raw/master/gif.gif)
 
 
 # VERSION 2
@@ -121,11 +121,35 @@
 
 ### LOGIC
 
+- Used [Shared Preferences](https://pub.dev/packages/shared_preferences) package for keeping a sort of cookie for JWT EXP validation.
+- Handled errors like HttpException, TimeOutException and SocketException.
+- Added a ping request for validation through a middleware in the Rest API.
+- Added insert in batch mode. Previous version was one by one which could take too long.
+- Signup provokes a Login afterwards. Better for new users.
+
 ### THEME
+
+- Removed Handlee font, because it was too out of place.
+- Made small changes to make the environment better.
+  - HomeScreen, border has the colour of the weekdays.
+  - Add/Edit Journal Screen share the same Weekday Colour on the divider below the AppBar and the Title.
+  - Added a divider between Title and Content.
+- Got my hands dirty on Illustrator and made a simple, yet nice icon this time.
+- Changed a lot of the Login Screen, minimal as possible, maybe even too difficult (long press on login for it to become signup), but fuck it.
+- Made Overview() and About() less useless by adding some content, but nothing game-changing.
 
 ## Things I didn't like about my project.
 
+- I still didn't fix my Side Menu. At least it looks fine, but I wish it was smoother.
+- I had seen great potential about Overview() Screen but I don't sense that anymore, and that's why I decided to leave it that way.
+- As fun as it was, this is not enough for Google Play Store. We'll get there though.
+
 ## Things I liked about my project.
 
+- I improved. I feel that way. I feel confident, without feeling cocky. I do understand this is just the very beginning.
+- I made it prettier than Alura version. Login() Screen came rather natural to me.
+- I finished it, and this is, by far, the biggest accomplishment. Yes, there are some other things I could've added, but they were not in the scope of this project, adding them would be extra, not essential. This is the first one of many, I reckon.
+- I kept having a lot of fun. Nothing seems like a drag at this point. Love making my own REST Api with Authentication and Authorisation using Go; I loved programming in Flutter, planning ahead my instructor. Worth every minute of it.
+
 ## 🏠 Endgame
-![My Project so far](https://github.com/RickHPotter/flutter_webapi/raw/master/gif1.gif)
+![My Project so far](https://github.com/RickHPotter/sept_jours/raw/master/gif1.gif)
