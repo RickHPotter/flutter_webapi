@@ -21,7 +21,7 @@
 ### REST API
 
 - Instead of using Node.js JSON-SERVER application to initiate a Fake Rest API, I did what I'd been planning all this time: build a basic REST API using GoLang. 
-    - It's surprisingly more than decent for this project. I recreated the [baby project](https://github.com/RickHPotter/fake_rest_api) with the help of [this Laith Academy's video](https://www.youtube.com/watch?v=d_L64KT3SFM&ab_channel=LaithAcademy), which led me to build [this REST Api of my own.](https://github.com/RickHPotter/flutter_rest_api/tree/version_one)
+    - It's surprisingly more than decent for this project. I recreated the [baby project](https://github.com/RickHPotter/fake_rest_api) with the help of [this Laith Academy's video](https://www.youtube.com/watch?v=d_L64KT3SFM&ab_channel=LaithAcademy), which led me to build [this REST Api of my own.](https://github.com/RickHPotter/sept_jours_api/tree/version_one)
 
 ### LOGIC
 
@@ -113,7 +113,7 @@
 
 ### REST API
 
-- The same package was used to mock a REST API, this time with authentication and authorisation using JWT. Instead of giving and going the easy route, I polished my [flutter_rest_api](https://github.com/RickHPotter/flutter_rest_api/tree/version_two) to do the same. I had a lot of fun with this, which makes it even better to realise that working on both extremes can become handy and give you more power on whatever you're building.
+- The same package was used to mock a REST API, this time with authentication and authorisation using JWT. Instead of giving and going the easy route, I polished my [sept_jours_api](https://github.com/RickHPotter/sept_jours_api/tree/version_two) to do the same. I had a lot of fun with this, which makes it even better to realise that working on both extremes can become handy and give you more power on whatever you're building.
 - The version 0.1 of my API was not really RESTFUL. A JSON was storing state on the back end, which made no sense. That was changed by the coming of GORM / postgres implementation.
 - User Model was implemented for Signup, Login and Logout endpoints.
 - Added Middleware so that Diary Entry Operations were only available to those who were logged in.
